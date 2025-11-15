@@ -4,8 +4,10 @@ Cálculo de tamaño de posición, SL/TP, y validación de margen
 """
 
 import logging
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from dataclasses import dataclass
+import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -36,11 +38,15 @@ class RiskManager:
         self, 
         risk_per_trade_pct: float = 1.0,
         min_risk_as_pct: float = 0.1,
-        risk_reward_ratio: float = 2.0
+        risk_reward_ratio: float = 2.0,
+        pool_lookback_bars: int = 192,
+        equal_tol: float = 0.0003
     ):
         self.risk_per_trade_pct = risk_per_trade_pct
         self.min_risk_as_pct = min_risk_as_pct
         self.risk_reward_ratio = risk_reward_ratio
+        self.pool_lookback_bars = pool_lookback_bars
+        self.equal_tol = equal_tol
     
     def calculate_position_size(
         self,
@@ -274,3 +280,192 @@ class RiskManager:
                     return breakeven_sl
         
         return None
+    
+    def _binsize(self, ref_price: float, tol: float) -> float:
+        """Calcula el tamaño del bin para agrupar niveles de precio"""
+        return max(1e-8, ref_price * tol)
+    
+    def build_liquidity_pools(self, df: pd.DataFrame, lookback: int = None, tol: float = None) -> List[Dict]:
+        """
+        Construye pools de liquidez como concentración de niveles en una ventana.
+        
+        Args:
+            df: DataFrame con datos OHLCV y columnas adicionales (swings, FVGs)
+            lookback: Número de velas hacia atrás a analizar
+            tol: Tolerancia para agrupar niveles similares
+            
+        Returns:
+            Lista de pools ordenados por score (mayor concentración)
+        """
+        if lookback is None: 
+            lookback = self.pool_lookback_bars
+        if tol is None: 
+            tol = self.equal_tol
+            
+        if len(df) < lookback:
+            return []
+            
+        window = df.tail(lookback)
+        if window.empty:
+            return []
+
+        mid_price = float(window['close'].iloc[-1])
+        binsize = self._binsize(mid_price, tol)
+        step = 5.0 if mid_price < 5000 else 10.0
+        pools = {}
+
+        def add(price: float, score: float):
+            if price is None or np.isnan(price):
+                return
+            bucket = round(price / binsize)
+            level = bucket * binsize
+            pools[level] = pools.get(level, 0.0) + score
+
+        # Equal highs/lows
+        highs = window['high'].values
+        lows = window['low'].values
+        for arr, base_score in ((highs, 3.0), (lows, 3.0)):
+            buckets = {}
+            for p in arr:
+                b = round(p / binsize)
+                buckets[b] = buckets.get(b, 0) + 1
+            for b, cnt in buckets.items():
+                if cnt >= 2:
+                    add(b * binsize, base_score * cnt)
+
+        # Swings (si existen las columnas)
+        if 'max' in window.columns:
+            swing_highs = window['max'].dropna().values
+            for p in swing_highs:
+                add(float(p), 4.0)
+                
+        if 'min' in window.columns:
+            swing_lows = window['min'].dropna().values
+            for p in swing_lows:
+                add(float(p), 4.0)
+
+        # FVG borders (si existen las columnas)
+        if 'fvg_bull_high' in window.columns:
+            for p in window['fvg_bull_high'].dropna().values:
+                add(float(p), 2.5)
+        if 'fvg_bear_low' in window.columns:
+            for p in window['fvg_bear_low'].dropna().values:
+                add(float(p), 2.5)
+        
+        # Niveles redondos
+        wmin = float(window['low'].min())
+        wmax = float(window['high'].max())
+        if step > 0:
+            lvl = (np.floor(wmin / step) * step)
+            while lvl <= wmax:
+                hits = ((np.abs(window['high'] - lvl) <= binsize) | 
+                       (np.abs(window['low'] - lvl) <= binsize)).sum()
+                if hits >= 1:
+                    add(lvl, 0.5 * hits)
+                lvl += step
+
+        levels = [{'price': float(k), 'score': float(v)} for k, v in pools.items()]
+        levels.sort(key=lambda x: (-x['score'], x['price']))
+        return levels
+    
+    def select_target_pool(self, entry_price: float, direction: str, sl_price: float, 
+                          pools: List[Dict], atr: float = None) -> Optional[float]:
+        """
+        Elige el pool objetivo para el take profit.
+        
+        Args:
+            entry_price: Precio de entrada
+            direction: 'LONG' o 'SHORT'
+            sl_price: Precio de stop loss
+            pools: Lista de pools generados por build_liquidity_pools
+            atr: Valor ATR para filtrar por distancia máxima
+            
+        Returns:
+            Precio del pool seleccionado o None
+        """
+        if not pools:
+            return None
+            
+        # Calcular TP mínimo basado en R:R para asegurar ganancia mínima
+        min_rr_tp = self.calculate_take_profit(entry_price, sl_price, direction)
+        
+        max_dist = 1.5 * atr if atr is not None else None
+
+        if direction == 'LONG':
+            # Filtrar pools que estén por encima del entry Y por encima del TP mínimo
+            candidates = [p for p in pools if p['price'] > entry_price and p['price'] >= min_rr_tp]
+            
+            if not candidates:
+                # Si no hay pools que cumplan el R:R mínimo, usar TP tradicional
+                return None
+                
+            candidates.sort(key=lambda p: (-p['score'], abs(p['price'] - entry_price)))
+            
+            if max_dist is not None:
+                within = [p for p in candidates if (p['price'] - entry_price) <= max_dist]
+                if within:
+                    return within[0]['price']
+                    
+            return candidates[0]['price'] if candidates else None
+            
+        else:  # SHORT
+            # Filtrar pools que estén por debajo del entry Y por debajo del TP mínimo
+            candidates = [p for p in pools if p['price'] < entry_price and p['price'] <= min_rr_tp]
+            
+            if not candidates:
+                # Si no hay pools que cumplan el R:R mínimo, usar TP tradicional
+                return None
+                
+            candidates.sort(key=lambda p: (-p['score'], abs(p['price'] - entry_price)))
+            
+            if max_dist is not None:
+                within = [p for p in candidates if (entry_price - p['price']) <= max_dist]
+                if within:
+                    return within[0]['price']
+                    
+            return candidates[0]['price'] if candidates else None
+    
+    def calculate_take_profit_with_pools(
+        self,
+        entry_price: float,
+        stop_loss: float,
+        direction: str,
+        df_candles: pd.DataFrame,
+        tp_override: Optional[float] = None,
+        atr: Optional[float] = None
+    ) -> float:
+        """
+        Calcula TP usando pools de liquidez (como el backtest).
+        
+        Args:
+            entry_price: Precio de entrada
+            stop_loss: Precio de stop loss
+            direction: 'LONG' o 'SHORT'
+            df_candles: DataFrame con velas recientes e indicadores
+            tp_override: TP manual (opcional)
+            atr: Valor ATR para filtrar distancia
+            
+        Returns:
+            Precio de take profit
+        """
+        if tp_override is not None:
+            # Validar que el TP tenga sentido
+            if direction == 'LONG' and tp_override > entry_price:
+                return tp_override
+            elif direction == 'SHORT' and tp_override < entry_price:
+                return tp_override
+        
+        # Construir pools de liquidez
+        pools = self.build_liquidity_pools(df_candles)
+        
+        if pools:
+            # Seleccionar pool objetivo
+            tp_pool = self.select_target_pool(entry_price, direction, stop_loss, pools, atr)
+            
+            if tp_pool is not None:
+                logger.info(f"🎯 TP basado en pool de liquidez: ${tp_pool:.4f}")
+                return tp_pool
+        
+        # Fallback a R:R tradicional si no hay pools
+        logger.debug("No se encontraron pools de liquidez, usando R:R tradicional")
+        return self.calculate_take_profit(entry_price, stop_loss, direction)

@@ -32,7 +32,8 @@ class ExecutionManager:
         setup: Dict,
         balance: float,
         leverage: int,
-        current_time: datetime
+        current_time: datetime,
+        df_candles: Optional['pd.DataFrame'] = None
     ) -> Optional[Position]:
         """
         Ejecuta una orden de mercado y crea la posición.
@@ -62,11 +63,23 @@ class ExecutionManager:
                 return None
             
             # Calcular take profit
-            take_profit = self.risk_manager.calculate_take_profit(
-                entry_price=setup['entry_price'],
-                stop_loss=sizing['stop_loss'],
-                direction=setup['direction']
-            )
+            if df_candles is not None:
+                # Usar pools de liquidez si tenemos datos de velas
+                atr = df_candles['atr'].iloc[-1] if 'atr' in df_candles.columns else None
+                take_profit = self.risk_manager.calculate_take_profit_with_pools(
+                    entry_price=setup['entry_price'],
+                    stop_loss=sizing['stop_loss'],
+                    direction=setup['direction'],
+                    df_candles=df_candles,
+                    atr=atr
+                )
+            else:
+                # Fallback a método tradicional
+                take_profit = self.risk_manager.calculate_take_profit(
+                    entry_price=setup['entry_price'],
+                    stop_loss=sizing['stop_loss'],
+                    direction=setup['direction']
+                )
             
             # Ejecutar orden de mercado
             side = 'buy' if setup['direction'] == 'LONG' else 'sell'
