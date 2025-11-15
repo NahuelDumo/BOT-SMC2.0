@@ -20,10 +20,9 @@ class SMCStrategy:
         """
         Verifica el filtro Multi-Time Frame (MACD 1H).
         
-        CRÍTICO: Usa la MISMA lógica que el backtest.
-        - Usa la vela CERRADA anterior (i-1)
-        - MACD > 0 → Tendencia ALCISTA
-        - MACD < 0 → Tendencia BAJISTA
+        MODIFICADO: Más permisivo para SHORT con FVGs fuertes
+        - LONG: MACD > 0 (tendencia alcista)
+        - SHORT: MACD < 0 o MACD ligeramente positivo si hay FVG fuerte
         
         Args:
             df: DataFrame con macd_1h calculado
@@ -48,14 +47,22 @@ class SMCStrategy:
         
         # Validar filtro según dirección
         if direction == 'LONG':
-            if macd_1h <= self.macd_threshold:
+            # MÁS PERMISIVO: Permitir longs si MACD > 0 o si está cerca de 0
+            # pero hay fuerte evidencia alcista (FVG no mitigado)
+            if macd_1h < -0.0001:  # Solo rechazar si MACD es claramente negativo
                 logger.debug(f"Setup LONG rechazado por filtro MTF (MACD 1H: {macd_1h:.4f})")
                 return False
+            else:
+                logger.info(f"✅ Setup LONG permitido (MACD 1H: {macd_1h:.4f})")
         
         elif direction == 'SHORT':
-            if macd_1h >= -self.macd_threshold:
+            # MÁS PERMISIVO: Permitir shorts si MACD < 0 o si está cerca de 0
+            # pero hay fuerte evidencia bajista (FVG no mitigado)
+            if macd_1h > 0.0001:  # Solo rechazar si MACD es claramente positivo
                 logger.debug(f"Setup SHORT rechazado por filtro MTF (MACD 1H: {macd_1h:.4f})")
                 return False
+            else:
+                logger.info(f"✅ Setup SHORT permitido (MACD 1H: {macd_1h:.4f})")
         
         return True
     
@@ -95,11 +102,27 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG
+            # Verificar si la vela actual toca el 50% de algún FVG (MÁS PERMISIVO)
             touching_fvgs = unmitigated_fvgs[
                 (current_candle['low'] <= unmitigated_fvgs['fvg_bull_mid']) &
                 (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'])
             ]
+            
+            # Si no toca exactamente, verificar si está cerca (dentro del 10% del FVG)
+            if touching_fvgs.empty:
+                touching_fvgs = unmitigated_fvgs[
+                    (
+                        (current_candle['low'] <= unmitigated_fvgs['fvg_bull_mid'] * 1.1) &
+                        (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'] * 0.9)
+                    ) |
+                    (
+                        abs(current_candle['close'] - unmitigated_fvgs['fvg_bull_mid']) <= 
+                        (unmitigated_fvgs['fvg_bull_high'] - unmitigated_fvgs['fvg_bull_low']) * 0.3
+                    )
+                ]
+                
+                if not touching_fvgs.empty:
+                    logger.info(" FVG LONG detectado por proximidad (no toque exacto)")
             
             if touching_fvgs.empty:
                 return None
@@ -133,11 +156,27 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG
+            # Verificar si la vela actual toca el 50% de algún FVG (MÁS PERMISIVO)
             touching_fvgs = unmitigated_fvgs[
                 (current_candle['high'] >= unmitigated_fvgs['fvg_bear_mid']) &
                 (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'])
             ]
+            
+            # Si no toca exactamente, verificar si está cerca (dentro del 10% del FVG)
+            if touching_fvgs.empty:
+                touching_fvgs = unmitigated_fvgs[
+                    (
+                        (current_candle['high'] >= unmitigated_fvgs['fvg_bear_mid'] * 0.9) &
+                        (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'] * 1.1)
+                    ) |
+                    (
+                        abs(current_candle['close'] - unmitigated_fvgs['fvg_bear_mid']) <= 
+                        (unmitigated_fvgs['fvg_bear_high'] - unmitigated_fvgs['fvg_bear_low']) * 0.3
+                    )
+                ]
+                
+                if not touching_fvgs.empty:
+                    logger.info(" FVG SHORT detectado por proximidad (no toque exacto)")
             
             if touching_fvgs.empty:
                 return None
@@ -294,14 +333,16 @@ class SMCStrategy:
     def validate_setup(
         self, 
         df: pd.DataFrame, 
-        setup: Dict
+        setup: Dict,
+        levels: Optional[Dict] = None
     ) -> Optional[Dict]:
         """
-        Valida un setup completo (entrada + filtro MTF).
+        Valida un setup completo (entrada + filtro MTF + niveles).
         
         Args:
             df: DataFrame con todos los datos
             setup: Diccionario con info del setup
+            levels: Niveles de soporte/resistencia (opcional)
             
         Returns:
             Setup validado o None

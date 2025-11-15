@@ -18,6 +18,7 @@ from core.patterns import PatternDetector
 from core.strategy import SMCStrategy
 from core.risk_management import RiskManager, Position
 from core.execution import ExecutionManager
+from core.levels import LevelDetector
 from telegram_bot.handlers import TelegramHandler
 from telegram_bot.commands import TelegramCommands
 
@@ -55,6 +56,7 @@ class SmartMoneyLiveBot:
         # Módulos core
         self.market_data = MarketDataManager(self.public_client)
         self.pattern_detector = PatternDetector(structure_lookback=20)
+        self.level_detector = LevelDetector()  # NUEVO: Detector de niveles
         self.strategy = SMCStrategy()
         self.risk_manager = RiskManager(
             risk_per_trade_pct=1.0,
@@ -73,10 +75,14 @@ class SmartMoneyLiveBot:
             chat_id=config.get('telegram_chat_id')
         )
         self.telegram_commands = TelegramCommands(self)
+        self.telegram_app = None  # Se inicializará en start()
         
         # Tracking
         self.candles_in_trade: Dict[str, int] = {}
         self.total_pnl = 0.0
+        
+        # NUEVO: Cache de niveles por símbolo
+        self.levels_cache: Dict[str, Dict] = {}
     
     def _setup_public_client(self) -> ccxt.Exchange:
         """Configura cliente público para datos de mercado"""
@@ -106,34 +112,73 @@ class SmartMoneyLiveBot:
         logger.info("🚀 Iniciando SmartMoneyLiveBot...")
         
         # Configurar aplicación de Telegram
-        telegram_app = Application.builder().token(self.telegram.bot.token).build()
+        await self._setup_telegram_bot()
         
-        # Registrar comandos
-        telegram_app.add_handler(CommandHandler("fvg", self.telegram_commands.cmd_fvg))
-        telegram_app.add_handler(CommandHandler("status", self.telegram_commands.cmd_status))
-        telegram_app.add_handler(CommandHandler("positions", self.telegram_commands.cmd_positions))
-        telegram_app.add_handler(CommandHandler("help", self.telegram_commands.cmd_help))
-        telegram_app.add_handler(CommandHandler("start", self.telegram_commands.cmd_start))
-        
-        # Enviar mensaje de inicio
-        await self.telegram.send_startup_message(self.symbols)
-        
-        # Inicializar datos
+        # Inicializar datos ANTES de iniciar Telegram
         await self._initialize_data()
         
-        # Iniciar Telegram bot y loop principal simultáneamente
-        async def run_telegram():
-            await telegram_app.initialize()
-            await telegram_app.start()
-            await telegram_app.updater.start_polling(drop_pending_updates=True)
-        
-        logger.info("🤖 Iniciando bot de Telegram y loop principal...")
-        
-        # Ejecutar ambos loops en paralelo
+        # Iniciar bot de Telegram y loop principal en paralelo
         await asyncio.gather(
-            run_telegram(),
-            self._main_loop()
+            self._run_telegram_bot(),
+            self._main_loop(),
+            self._send_startup_notification()
         )
+    
+    async def _setup_telegram_bot(self):
+        """Configura el bot de Telegram con handlers de comandos"""
+        config = load_config()
+        token = config.get('telegram_token')
+        
+        if not token:
+            logger.warning("No hay token de Telegram configurado")
+            return
+        
+        # Crear aplicación
+        self.telegram_app = Application.builder().token(token).build()
+        
+        # Registrar comandos
+        self.telegram_app.add_handler(CommandHandler("start", self.telegram_commands.cmd_start))
+        self.telegram_app.add_handler(CommandHandler("help", self.telegram_commands.cmd_help))
+        self.telegram_app.add_handler(CommandHandler("fvg", self.telegram_commands.cmd_fvg))
+        self.telegram_app.add_handler(CommandHandler("status", self.telegram_commands.cmd_status))
+        self.telegram_app.add_handler(CommandHandler("positions", self.telegram_commands.cmd_positions))
+        self.telegram_app.add_handler(CommandHandler("levels", self.telegram_commands.cmd_levels))  # NUEVO
+        
+        logger.info("✅ Comandos de Telegram configurados")
+    
+    async def _run_telegram_bot(self):
+        """Ejecuta el bot de Telegram"""
+        if self.telegram_app is None:
+            logger.warning("⚠️ Bot de Telegram no configurado (falta token)")
+            return
+        
+        try:
+            logger.info("📱 Inicializando bot de Telegram...")
+            await self.telegram_app.initialize()
+            
+            logger.info("📱 Iniciando bot de Telegram...")
+            await self.telegram_app.start()
+            
+            logger.info("📱 Iniciando polling de Telegram...")
+            await self.telegram_app.updater.start_polling(
+                drop_pending_updates=True,
+                allowed_updates=['message', 'callback_query']
+            )
+            
+            logger.info("✅ Bot de Telegram escuchando comandos")
+            logger.info("📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels")
+            
+            # Mantener el bot corriendo
+            while True:
+                await asyncio.sleep(1)
+                
+        except Exception as e:
+            logger.error(f"❌ Error en bot de Telegram: {e}", exc_info=True)
+    
+    async def _send_startup_notification(self):
+        """Envía notificación de inicio después de que todo esté listo"""
+        await asyncio.sleep(3)  # Esperar 3 segundos para que Telegram esté listo
+        await self.telegram.send_startup_message(self.symbols)
     
     async def _initialize_data(self):
         """Inicializa datos de mercado para todos los símbolos"""
@@ -154,8 +199,33 @@ class SmartMoneyLiveBot:
                 df = self.pattern_detector.detect_fvg_and_mitigation(df)
                 df = self.pattern_detector.detect_swings(df)
                 self.market_data.dfs[symbol] = df
+                
+                # NUEVO: Detectar niveles iniciales
+                self._update_levels(symbol, df)
         
         logger.info("✅ Datos inicializados correctamente")
+    
+    def _update_levels(self, symbol: str, df):
+        """Actualiza los niveles de soporte/resistencia para un símbolo"""
+        try:
+            # Detectar niveles
+            levels = self.level_detector.detect_levels(df)
+            
+            # Guardar en cache
+            self.levels_cache[symbol] = {
+                'support': levels['support'],
+                'resistance': levels['resistance'],
+                'timestamp': datetime.now()
+            }
+            
+            logger.info(
+                f"📊 {symbol} - Niveles: "
+                f"{len(levels['support'])} soportes, "
+                f"{len(levels['resistance'])} resistencias"
+            )
+            
+        except Exception as e:
+            logger.error(f"Error actualizando niveles para {symbol}: {e}")
     
     async def _main_loop(self):
         """Loop principal del bot - SE EJECUTA CADA 10 SEGUNDOS"""
@@ -209,6 +279,9 @@ class SmartMoneyLiveBot:
                     df = self.pattern_detector.detect_fvg_and_mitigation(df)
                     df = self.pattern_detector.detect_swings(df)
                     self.market_data.dfs[symbol] = df
+                    
+                    # NUEVO: Actualizar niveles
+                    self._update_levels(symbol, df)
                 
             except Exception as e:
                 logger.error(f"Error actualizando {symbol}: {e}")
@@ -297,9 +370,12 @@ class SmartMoneyLiveBot:
                 if df is None or df.empty or len(df) < 50:
                     continue
                 
+                # NUEVO: Obtener niveles actuales
+                levels = self.levels_cache.get(symbol, {})
+                
                 # PRIORIDAD 1: FVG Memory Long
                 setup = self.strategy.check_fvg_memory_setup(df, 'LONG')
-                setup = self.strategy.validate_setup(df, setup)
+                setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
@@ -307,7 +383,7 @@ class SmartMoneyLiveBot:
                 
                 # PRIORIDAD 2: FVG Memory Short
                 setup = self.strategy.check_fvg_memory_setup(df, 'SHORT')
-                setup = self.strategy.validate_setup(df, setup)
+                setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
@@ -315,7 +391,7 @@ class SmartMoneyLiveBot:
                 
                 # PRIORIDAD 3: Sweep Long
                 setup = self.strategy.check_sweep_setup(df, 'LONG')
-                setup = self.strategy.validate_setup(df, setup)
+                setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
@@ -323,7 +399,7 @@ class SmartMoneyLiveBot:
                 
                 # PRIORIDAD 4: Sweep Short
                 setup = self.strategy.check_sweep_setup(df, 'SHORT')
-                setup = self.strategy.validate_setup(df, setup)
+                setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
