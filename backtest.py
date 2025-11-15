@@ -727,7 +727,7 @@ class SmartMoneyScalpingBacktest:
             except Exception as _:
                 pass
 
-    def run_backtest(self, days=5):
+    def run_backtest(self, days=130):
         """Prepara todos los datos MTF y luego corre la simulación."""
         data_ready = self.prepare_all_data(days=days)
         if not data_ready or self.df is None: 
@@ -1210,4 +1210,4 @@ if __name__ == "__main__":
     # Ejecutar el Backtest Multisímbolo
     msb = MultiSymbolBacktest(symbols=symbols_cfg, initial_balance=initial_balance_cfg, symbol_configs=symbol_configs_cfg)
     msb.max_concurrent = max_concurrent_cfg
-    msb.run(days=30) # Correr backtest de 30 días
+    msb.run(days=130) # Correr backtest de 30 días
