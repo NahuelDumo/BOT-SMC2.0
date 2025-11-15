@@ -18,7 +18,7 @@ from core.patterns import PatternDetector
 from core.strategy import SMCStrategy
 from core.risk_management import RiskManager, Position
 from core.execution import ExecutionManager
-from core.levels import LevelDetector
+from core.historical_level import HistoricalLevelsDetector as LevelDetector
 from telegram_bot.handlers import TelegramHandler
 from telegram_bot.commands import TelegramCommands
 
@@ -208,20 +208,28 @@ class SmartMoneyLiveBot:
     def _update_levels(self, symbol: str, df):
         """Actualiza los niveles de soporte/resistencia para un símbolo"""
         try:
+            # Obtener precio actual
+            current_price = float(df['close'].iloc[-1])
+            
             # Detectar niveles
-            levels = self.level_detector.detect_levels(df)
+            levels = self.level_detector.detect_all_levels(symbol, df, current_price)
+            
+            # Separar soportes y resistencias
+            supports = [l for l in levels if l.price < current_price]
+            resistances = [l for l in levels if l.price > current_price]
             
             # Guardar en cache
             self.levels_cache[symbol] = {
-                'support': levels['support'],
-                'resistance': levels['resistance'],
+                'support': supports,
+                'resistance': resistances,
+                'all_levels': levels,
                 'timestamp': datetime.now()
             }
             
             logger.info(
                 f"📊 {symbol} - Niveles: "
-                f"{len(levels['support'])} soportes, "
-                f"{len(levels['resistance'])} resistencias"
+                f"{len(supports)} soportes, "
+                f"{len(resistances)} resistencias"
             )
             
         except Exception as e:
