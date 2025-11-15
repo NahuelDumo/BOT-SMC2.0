@@ -139,28 +139,35 @@ class TelegramCommands:
                 
                 current_price = float(df['close'].iloc[-1])
                 
-                # Obtener niveles cercanos
-                nearest = self.bot.historical_detector.get_nearest_levels(
-                    symbol, 
-                    current_price, 
-                    n=3
-                )
+                levels_data = self.bot.levels_cache.get(symbol, {})
+                if not levels_data:
+                    # Si no hay en cache, calcular al momento
+                    try:
+                        levels = self.bot.level_detector.detect_all_levels(symbol, df, current_price)
+                        supports = [l for l in levels if l.price < current_price]
+                        resistances = [l for l in levels if l.price > current_price]
+                    except Exception as e:
+                        logger.error(f"Error detectando niveles para {symbol}: {e}")
+                        continue
+                else:
+                    supports = levels_data.get('support', [])
+                    resistances = levels_data.get('resistance', [])
                 
                 message += f"<b>--- {symbol} ---</b>\n"
                 message += f"💰 Precio Actual: ${current_price:,.2f}\n\n"
                 
                 # Resistencias
-                if nearest['resistance']:
+                if resistances:
                     message += "🔴 <b>RESISTENCIAS:</b>\n"
-                    for level in nearest['resistance']:
+                    for level in resistances[:5]:  # Limitar a 5 más cercanas
                         distance_pct = ((level.price - current_price) / current_price) * 100
-                        strength_emoji = "🔥" * min(level.strength // 3, 5)
+                        strength_emoji = "🔥" * min(getattr(level, 'strength', 3) // 3, 5)
                         
                         message += (
                             f"  {strength_emoji} ${level.price:,.2f} "
                             f"(+{distance_pct:.2f}%)\n"
-                            f"      {level.description}\n"
-                            f"      Testeado: {level.strength}x\n"
+                            f"      {getattr(level, 'description', 'Nivel histórico')}\n"
+                            f"      Testeado: {getattr(level, 'strength', 3)}x\n"
                         )
                 else:
                     message += "🔴 <b>RESISTENCIAS:</b> (Ninguna cercana)\n"
@@ -168,17 +175,17 @@ class TelegramCommands:
                 message += "\n"
                 
                 # Soportes
-                if nearest['support']:
+                if supports:
                     message += "🟢 <b>SOPORTES:</b>\n"
-                    for level in nearest['support']:
+                    for level in supports[:5]:  # Limitar a 5 más cercanos
                         distance_pct = ((current_price - level.price) / current_price) * 100
-                        strength_emoji = "🔥" * min(level.strength // 3, 5)
+                        strength_emoji = "🔥" * min(getattr(level, 'strength', 3) // 3, 5)
                         
                         message += (
                             f"  {strength_emoji} ${level.price:,.2f} "
                             f"(-{distance_pct:.2f}%)\n"
-                            f"      {level.description}\n"
-                            f"      Testeado: {level.strength}x\n"
+                            f"      {getattr(level, 'description', 'Nivel histórico')}\n"
+                            f"      Testeado: {getattr(level, 'strength', 3)}x\n"
                         )
                 else:
                     message += "🟢 <b>SOPORTES:</b> (Ninguno cercano)\n"
