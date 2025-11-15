@@ -6,6 +6,7 @@ from .patterns import PatternDetector
 from .strategy import SMCStrategy
 from .risk_management import RiskManager, Position
 from .execution import ExecutionManager
+from .levels import LevelDetector
 
 __all__ = [
     'MarketDataManager',
@@ -13,5 +14,6 @@ __all__ = [
     'SMCStrategy',
     'RiskManager',
     'Position',
-    'ExecutionManager'
+    'ExecutionManager', 
+    'LevelDetector'
 ]
