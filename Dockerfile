@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Comando para ejecutar el bot
-CMD ["python", "bot_smc_BTCETH.py"]
+CMD ["python", "main.py"]
