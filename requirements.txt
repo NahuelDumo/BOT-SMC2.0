@@ -1,0 +1,34 @@
+# Telegram Bot
+python-telegram-bot==20.7
+
+# Cryptocurrency Exchange
+ccxt==4.2.25
+
+# Data Analysis
+pandas==2.1.4
+numpy==1.26.2
+
+# HTTP Requests
+aiohttp==3.9.1
+requests==2.31.0
+
+# Scientific Computing
+scipy==1.11.4
+
+# Data Visualization (for backtesting)
+matplotlib==3.8.2
+
+# Excel Export (for backtesting results)
+xlsxwriter==3.1.9
+
+# Python Standard Library modules (not included in requirements.txt)
+# - asyncio
+# - json
+# - logging
+# - time
+# - os
+# - datetime
+# - dataclasses
+# - typing
+# - argparse
+# - hashlib
