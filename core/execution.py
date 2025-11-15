@@ -84,13 +84,29 @@ class ExecutionManager:
             # Ejecutar orden de mercado
             side = 'buy' if setup['direction'] == 'LONG' else 'sell'
             
-            order = self.private_client.create_order(
-                symbol=symbol,
-                type='market',
-                side=side,
-                amount=sizing['size_base'],
-                params={'reduceOnly': False}
-            )
+            # Obtener precio actual para simulación
+            current_price = setup['entry_price']
+            
+            # Verificar si hay cliente privado (modo real vs simulación)
+            if self.private_client is None:
+                logger.warning(" MODO SIMULACIÓN: Sin cliente privado. Creando orden simulada.")
+                order = {
+                    'symbol': symbol,
+                    'amount': sizing['size_base'],
+                    'price': current_price,
+                    'side': side,
+                    'type': 'market',
+                    'status': 'closed',
+                    'filled': sizing['size_base']
+                }
+            else:
+                order = self.private_client.create_order(
+                    symbol=symbol,
+                    type='market',
+                    side=side,
+                    amount=sizing['size_base'],
+                    params={'reduceOnly': False}
+                )
             
             # Crear posición
             position = Position(
@@ -127,6 +143,10 @@ class ExecutionManager:
     async def _set_sl_tp_orders(self, position: Position):
         """Establece órdenes de SL y TP en el exchange"""
         try:
+            if self.private_client is None:
+                logger.info("🔄 MODO SIMULACIÓN: SL/TP manejados internamente")
+                return
+                
             side_to_close = 'sell' if position.direction == 'LONG' else 'buy'
             
             # Stop Loss
@@ -157,6 +177,11 @@ class ExecutionManager:
     async def update_stop_loss(self, position: Position, new_sl: float):
         """Actualiza el stop loss de una posición"""
         try:
+            if self.private_client is None:
+                logger.info("🔄 MODO SIMULACIÓN: SL actualizado internamente")
+                position.stop_loss = new_sl
+                return
+                
             # Cancelar órdenes anteriores
             self.private_client.cancel_all_orders(position.symbol)
             
@@ -203,19 +228,22 @@ class ExecutionManager:
             return None
         
         try:
-            # Cancelar órdenes pendientes
-            self.private_client.cancel_all_orders(symbol)
-            
-            # Ejecutar orden de cierre
-            side_to_close = 'sell' if position.direction == 'LONG' else 'buy'
-            
-            close_order = self.private_client.create_order(
-                symbol=symbol,
-                type='market',
-                side=side_to_close,
-                amount=position.size_base,
-                params={'reduceOnly': True}
-            )
+            if self.private_client is None:
+                logger.info("🔄 MODO SIMULACIÓN: Cierre simulado de posición")
+            else:
+                # Cancelar órdenes pendientes
+                self.private_client.cancel_all_orders(symbol)
+                
+                # Ejecutar orden de cierre
+                side_to_close = 'sell' if position.direction == 'LONG' else 'buy'
+                
+                close_order = self.private_client.create_order(
+                    symbol=symbol,
+                    type='market',
+                    side=side_to_close,
+                    amount=position.size_base,
+                    params={'reduceOnly': True}
+                )
             
             # Calcular PnL
             if position.direction == 'LONG':
