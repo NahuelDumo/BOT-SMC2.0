@@ -69,16 +69,18 @@ class SMCStrategy:
     def check_fvg_memory_setup(
         self, 
         df: pd.DataFrame, 
-        direction: str
+        direction: str,
+        current_price: Optional[float] = None
     ) -> Optional[Dict]:
         """
         Detecta setup de FVG con Memoria (retorno a FVG no mitigado).
         
-        IMPORTANTE: Entrada al 50% del FVG (como en el backtest).
+        IMPORTANTE: Usa el precio actual en tiempo real, no el close de la vela.
         
         Args:
             df: DataFrame con FVGs detectados
             direction: 'LONG' o 'SHORT'
+            current_price: Precio actual del mercado (si None, usa close de vela)
             
         Returns:
             Dict con info del setup o None
@@ -88,6 +90,10 @@ class SMCStrategy:
         
         # Vela actual (última)
         current_candle = df.iloc[-1]
+        
+        # Precio actual: usar ticker en tiempo real o fallback a close
+        if current_price is None:
+            current_price = float(current_candle['close'])
         
         # FVGs históricos (excluir velas actuales)
         df_historical = df.iloc[:-1]
@@ -102,9 +108,9 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG (SOLO TOQUE DIRECTO)
+            # Verificar si la vela actual toca el rango del FVG
             touching_fvgs = unmitigated_fvgs[
-                (current_candle['low'] <= unmitigated_fvgs['fvg_bull_mid']) &
+                (current_candle['low'] <= unmitigated_fvgs['fvg_bull_high']) &
                 (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'])
             ]
             
@@ -125,6 +131,11 @@ class SMCStrategy:
             sl_buffer = fvg_low * 0.0005
             stop_loss = fvg_low - sl_buffer
             
+            logger.info(
+                f"🎯 FVG LONG detectado: Entry={entry_price:.2f}, "
+                f"SL={stop_loss:.2f}, FVG=[{fvg_low:.2f}, {fvg['fvg_bull_high']:.2f}]"
+            )
+            
             return {
                 'direction': 'LONG',
                 'entry_price': entry_price,
@@ -141,21 +152,33 @@ class SMCStrategy:
             ]
             
             if unmitigated_fvgs.empty:
+                logger.debug("❌ No hay FVGs bajistas no mitigados")
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG (SOLO TOQUE DIRECTO)
+            # FIX: Verificar si la vela actual toca el rango del FVG
+            # ANTES era: high >= mid AND low <= high (MUY RESTRICTIVO)
+            # AHORA es: high >= low AND low <= high (toca cualquier parte del FVG)
             touching_fvgs = unmitigated_fvgs[
-                (current_candle['high'] >= unmitigated_fvgs['fvg_bear_mid']) &
+                (current_candle['high'] >= unmitigated_fvgs['fvg_bear_low']) &
                 (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'])
             ]
             
             if touching_fvgs.empty:
+                logger.debug(
+                    f"❌ Vela actual NO toca FVGs bajistas. "
+                    f"High: {current_candle['high']:.2f}, "
+                    f"Low: {current_candle['low']:.2f}"
+                )
+                # Log de FVGs disponibles para debugging
+                for idx, fvg_row in unmitigated_fvgs.iterrows():
+                    logger.debug(
+                        f"  FVG disponible: [{fvg_row['fvg_bear_low']:.2f} - {fvg_row['fvg_bear_high']:.2f}]"
+                    )
                 return None
             
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL 50% DEL FVG (como en backtest)
             # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
             entry_price = float(current_candle['close'])
             
@@ -163,6 +186,11 @@ class SMCStrategy:
             fvg_high = float(fvg['fvg_bear_high'])
             sl_buffer = fvg_high * 0.0005
             stop_loss = fvg_high + sl_buffer
+            
+            logger.info(
+                f"🎯 FVG SHORT detectado: Entry={entry_price:.2f}, "
+                f"SL={stop_loss:.2f}, FVG=[{fvg['fvg_bear_low']:.2f}, {fvg_high:.2f}]"
+            )
             
             return {
                 'direction': 'SHORT',

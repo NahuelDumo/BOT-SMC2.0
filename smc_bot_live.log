@@ -1929,3 +1929,10 @@ task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Applic
 2025-11-15 23:01:14,351 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 20 resistencias
 2025-11-15 23:01:14,359 - INFO - ✅ Ciclo completado en 3.03s | Posiciones: 0/4 | Balance: $30.00
 2025-11-15 23:01:14,359 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-15 23:01:21,088 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
+2025-11-15 23:01:22,890 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Application._update_fetcher() running at C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_application.py:1149> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:764]>
+2025-11-16 01:08:37,498 - WARNING - Sin credenciales de API. Modo simulación.
+2025-11-16 01:08:38,052 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
+2025-11-16 01:08:38,600 - INFO - ✅ Comandos de Telegram configurados
+2025-11-16 01:08:38,600 - INFO - 📊 Inicializando datos de mercado...
