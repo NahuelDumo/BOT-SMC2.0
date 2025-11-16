@@ -2740,3 +2740,28 @@ task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Applic
 2025-11-16 01:34:23,545 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
 2025-11-16 01:34:23,772 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
 2025-11-16 01:34:23,772 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:34:24,414 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:24,509 - INFO - 📊 HYPE/USDT: Detectados 12 niveles históricos (ATH/ATL: 1, Fuertes: 10)
+2025-11-16 01:34:24,509 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 7 resistencias
+2025-11-16 01:34:25,146 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:25,260 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:34:25,261 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:34:25,862 - INFO - ✅ Ciclo completado en 3.68s | Posiciones: 0/4 | Balance: $29.71
+2025-11-16 01:34:25,863 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 01:34:36,518 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:36,613 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:34:36,613 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:34:37,248 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:37,361 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:34:37,361 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:34:37,986 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:38,069 - INFO - 📊 HYPE/USDT: Detectados 12 niveles históricos (ATH/ATL: 1, Fuertes: 10)
+2025-11-16 01:34:38,069 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 7 resistencias
+2025-11-16 01:34:38,694 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:34:38,807 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:34:38,808 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:34:39,419 - INFO - ✅ Ciclo completado en 3.54s | Posiciones: 0/4 | Balance: $29.71
+2025-11-16 01:34:39,420 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 01:34:41,915 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
+2025-11-16 01:34:42,960 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Application._update_fetcher() running at C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_application.py:1149> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:764]>
