@@ -301,8 +301,8 @@ class SmartMoneyLiveBot:
                 logger.error(f"Error actualizando {symbol}: {e}")
     
     async def _manage_open_positions(self):
-        """Gestiona todas las posiciones abiertas"""
-        config = load_config()  # Recargar configuración para obtener symbol_configs
+        """Gestiona todas las posiciones abiertas usando precio actual del ticker"""
+        config = load_config()
         
         for symbol in list(self.execution.open_positions.keys()):
             try:
@@ -313,12 +313,22 @@ class SmartMoneyLiveBot:
                     continue
                 
                 current_candle = df.iloc[-1]
-                current_price = float(current_candle['close'])
+                
+                # CRÍTICO: Obtener precio actual del ticker (tiempo real)
+                try:
+                    ticker = await self.public_client.fetch_ticker(symbol)
+                    current_price = float(ticker['last'])
+                    logger.debug(f"💰 {symbol}: Precio actual = ${current_price:.4f}")
+                except Exception as e:
+                    logger.warning(f"Error obteniendo ticker de {symbol}: {e}")
+                    # Fallback: usar close de la vela actual
+                    current_price = float(current_candle['close'])
                 
                 # Incrementar contador de velas
                 self.candles_in_trade[symbol] = self.candles_in_trade.get(symbol, 0) + 1
                 
                 # 1. Verificar condiciones de salida (SL, TP, Time Limit)
+                # NOTA: check_exit_conditions debe usar current_price para verificar SL/TP
                 exit_condition = self.execution.check_exit_conditions(
                     symbol=symbol,
                     current_candle=current_candle,
@@ -343,7 +353,7 @@ class SmartMoneyLiveBot:
                     
                     continue
                 
-                # 2. Actualizar Breakeven
+                # 2. Actualizar Breakeven (usa precio actual del ticker)
                 breakeven_sl = self.risk_manager.check_breakeven(
                     position=position,
                     current_price=current_price
@@ -371,9 +381,9 @@ class SmartMoneyLiveBot:
                         old_sl = position.stop_loss
                         await self.execution.update_stop_loss(position, trailing_sl)
                         await self.telegram.send_sl_updated(symbol, old_sl, trailing_sl)
-                        logger.debug(f" {symbol}: Trailing stop estructural activado")
+                        logger.debug(f"🔄 {symbol}: Trailing stop estructural activado")
                 else:
-                    logger.debug(f" {symbol}: Trailing stop estructural deshabilitado en config")
+                    logger.debug(f"⏸️ {symbol}: Trailing stop estructural deshabilitado en config")
                 
             except Exception as e:
                 logger.error(f"Error gestionando posición {symbol}: {e}", exc_info=True)
@@ -396,7 +406,7 @@ class SmartMoneyLiveBot:
             if last_close:
                 time_since_close = datetime.now() - last_close
                 if time_since_close.total_seconds() < (self.trade_cooldown_minutes * 60):
-                    logger.debug(f" {symbol} en cooldown desde cierre ({time_since_close.total_seconds():.0f}s)")
+                    logger.debug(f"⏳ {symbol} en cooldown desde cierre ({time_since_close.total_seconds():.0f}s)")
                     continue
             
             try:
@@ -405,44 +415,55 @@ class SmartMoneyLiveBot:
                 if df is None or df.empty or len(df) < 50:
                     continue
                 
+                # CRÍTICO: Obtener precio actual del ticker (tiempo real)
+                try:
+                    ticker = self.public_client.fetch_ticker(symbol)
+                    current_price = float(ticker['last'])
+                    logger.debug(f"💰 {symbol}: Precio actual del ticker = ${current_price:.2f}")
+                except Exception as e:
+                    logger.warning(f"Error obteniendo ticker de {symbol}: {e}")
+                    # Fallback: usar close de la vela actual
+                    current_price = float(df['close'].iloc[-1])
+                    logger.debug(f"💰 {symbol}: Usando close de vela = ${current_price:.2f}")
+                
                 # NUEVO: Obtener niveles actuales
                 levels = self.levels_cache.get(symbol, {})
                 
                 # PRIORIDAD 1: FVG Memory Long
-                setup = self.strategy.check_fvg_memory_setup(df, 'LONG')
+                setup = self.strategy.check_fvg_memory_setup(df, 'LONG', current_price=current_price)
                 setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
+                    continue
                 
                 # PRIORIDAD 2: FVG Memory Short
-                setup = self.strategy.check_fvg_memory_setup(df, 'SHORT')
+                setup = self.strategy.check_fvg_memory_setup(df, 'SHORT', current_price=current_price)
                 setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
+                    continue
                 
                 # PRIORIDAD 3: Sweep Long
-                setup = self.strategy.check_sweep_setup(df, 'LONG')
+                setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
                 setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
+                    continue
                 
                 # PRIORIDAD 4: Sweep Short
-                setup = self.strategy.check_sweep_setup(df, 'SHORT')
+                setup = self.strategy.check_sweep_setup(df, 'SHORT', current_price=current_price)
                 setup = self.strategy.validate_setup(df, setup, levels=levels)
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
+                    continue
                 
             except Exception as e:
                 logger.error(f"Error escaneando {symbol}: {e}", exc_info=True)
-    
+                
     async def _execute_setup(self, symbol: str, setup: Dict):
         """Ejecuta un setup validado con TP dinámico (mínimo 15% ganancia sobre margen)"""
         leverage = self.leverage_per_symbol.get(

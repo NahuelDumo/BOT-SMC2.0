@@ -1936,3 +1936,564 @@ task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Applic
 2025-11-16 01:08:38,052 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
 2025-11-16 01:08:38,600 - INFO - ✅ Comandos de Telegram configurados
 2025-11-16 01:08:38,600 - INFO - 📊 Inicializando datos de mercado...
+2025-11-16 01:26:08,565 - WARNING - Sin credenciales de API. Modo simulación.
+2025-11-16 01:26:09,108 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
+2025-11-16 01:26:09,646 - INFO - ✅ Comandos de Telegram configurados
+2025-11-16 01:26:09,646 - INFO - 📊 Inicializando datos de mercado...
+2025-11-16 01:26:11,338 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:11,461 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:26:11,461 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:26:12,093 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:12,208 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:26:12,208 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:26:12,846 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:12,927 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:26:12,927 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:26:13,556 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:13,667 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:26:13,667 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:26:13,667 - INFO - ✅ Datos inicializados correctamente
+2025-11-16 01:26:13,667 - INFO - 📱 Inicializando bot de Telegram...
+2025-11-16 01:26:13,669 - INFO - ⚙️ Iniciando loop principal (actualización cada 10s)...
+2025-11-16 01:26:14,307 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:14,401 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:26:14,402 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:26:15,035 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:15,149 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:26:15,149 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:26:15,787 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:15,872 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:26:15,872 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:26:16,510 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:16,626 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:26:16,626 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:26:16,932 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:16,934 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:17,240 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:17,242 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:17,546 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:17,549 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:17,857 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:17,860 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:17,861 - INFO - ✅ Ciclo completado en 4.19s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:26:18,580 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getMe "HTTP/1.1 200 OK"
+2025-11-16 01:26:18,581 - INFO - 📱 Iniciando bot de Telegram...
+2025-11-16 01:26:18,581 - INFO - Application started
+2025-11-16 01:26:18,581 - INFO - 📱 Iniciando polling de Telegram...
+2025-11-16 01:26:18,816 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/deleteWebhook "HTTP/1.1 200 OK"
+2025-11-16 01:26:18,817 - INFO - ✅ Bot de Telegram escuchando comandos
+2025-11-16 01:26:18,817 - INFO - 📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels
+2025-11-16 01:26:21,753 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 01:26:23,603 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:26:23,604 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:23,604 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:28,506 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:28,613 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:26:28,613 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:26:29,240 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:29,362 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:26:29,362 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:26:29,998 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:30,088 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:26:30,088 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:26:30,723 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:30,847 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:26:30,848 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:26:31,151 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:31,153 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:31,459 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:31,462 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:31,772 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:31,775 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:32,084 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:32,086 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:32,087 - INFO - ✅ Ciclo completado en 4.22s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:26:32,088 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:26:32,088 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:32,088 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:39,119 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:26:39,119 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:39,119 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:42,724 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:42,826 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:26:42,826 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:26:43,461 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:43,575 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:26:43,576 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:26:44,210 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:44,295 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:26:44,295 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:26:44,926 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:45,042 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:26:45,043 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:26:45,348 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:45,352 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:45,656 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:45,659 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:45,969 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:45,972 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:46,275 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:46,277 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:46,278 - INFO - ✅ Ciclo completado en 4.19s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:26:46,278 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 01:26:46,280 - INFO - 📱 Comando /fvg recibido de None
+2025-11-16 01:26:47,135 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 01:26:47,990 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 01:26:47,991 - INFO - ✅ Reporte FVG enviado
+2025-11-16 01:26:50,538 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:26:50,540 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:50,540 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:26:56,929 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:57,023 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:26:57,023 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:26:57,654 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:57,767 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:26:57,768 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:26:58,405 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:58,487 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:26:58,488 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:26:59,127 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:26:59,245 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:26:59,246 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:26:59,548 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:59,552 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:26:59,854 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:26:59,857 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:00,167 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:00,170 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:00,474 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:00,477 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:00,478 - INFO - ✅ Ciclo completado en 4.19s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:27:00,478 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:27:00,478 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:27:00,480 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:27:07,817 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 409 Conflict"
+2025-11-16 01:27:07,818 - ERROR - Error while getting Updates: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:27:07,818 - ERROR - Exception happened while polling for updates.
+Traceback (most recent call last):
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 688, in _network_loop_retry
+    if not await action_cb():
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 384, in polling_action_cb
+    raise exc
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_updater.py", line 373, in polling_action_cb
+    updates = await self.bot.get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 558, in get_updates
+    updates = await super().get_updates(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 525, in decorator
+    result = await func(self, *args, **kwargs)  # skipcq: PYL-E1102
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 3584, in get_updates
+    await self._post(
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 613, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_extbot.py", line 340, in _do_post
+    return await super()._do_post(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\_bot.py", line 641, in _do_post
+    return await request.post(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 200, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\request\_baserequest.py", line 381, in _request_wrapper
+    raise Conflict(message)
+telegram.error.Conflict: Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+2025-11-16 01:27:45,618 - WARNING - Sin credenciales de API. Modo simulación.
+2025-11-16 01:27:46,153 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
+2025-11-16 01:27:46,695 - INFO - ✅ Comandos de Telegram configurados
+2025-11-16 01:27:46,695 - INFO - 📊 Inicializando datos de mercado...
+2025-11-16 01:27:49,496 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:49,592 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:27:49,593 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:27:50,261 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:50,370 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:27:50,370 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:27:51,038 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:51,118 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:27:51,119 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:27:51,789 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:51,899 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:27:51,900 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:27:51,900 - INFO - ✅ Datos inicializados correctamente
+2025-11-16 01:27:51,900 - INFO - 📱 Inicializando bot de Telegram...
+2025-11-16 01:27:51,900 - INFO - ⚙️ Iniciando loop principal (actualización cada 10s)...
+2025-11-16 01:27:52,572 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:52,667 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:27:52,668 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:27:53,341 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:53,461 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:27:53,463 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:27:54,131 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:54,216 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:27:54,217 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:27:54,884 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:27:55,002 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:27:55,002 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:27:55,322 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:55,324 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:55,648 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:55,652 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:55,977 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:55,980 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:56,299 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:27:56,302 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:27:56,302 - INFO - ✅ Ciclo completado en 4.40s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:27:57,057 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getMe "HTTP/1.1 200 OK"
+2025-11-16 01:27:57,058 - INFO - 📱 Iniciando bot de Telegram...
+2025-11-16 01:27:57,058 - INFO - Application started
+2025-11-16 01:27:57,058 - INFO - 📱 Iniciando polling de Telegram...
+2025-11-16 01:27:57,305 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/deleteWebhook "HTTP/1.1 200 OK"
+2025-11-16 01:27:57,306 - INFO - ✅ Bot de Telegram escuchando comandos
+2025-11-16 01:27:57,306 - INFO - 📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels
+2025-11-16 01:28:00,166 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 01:28:06,981 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:07,073 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:28:07,073 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:28:07,745 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:07,853 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:28:07,853 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:28:08,515 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:08,630 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:28:08,631 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:28:09,294 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:09,410 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:28:09,411 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:28:09,730 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:09,733 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:10,053 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:10,056 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:10,380 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:10,384 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:10,703 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:10,706 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:10,706 - INFO - ✅ Ciclo completado en 4.39s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:28:10,707 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 01:28:21,396 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:21,489 - INFO - 📊 ETH/USDT: Detectados 12 niveles históricos (ATH/ATL: 2, Fuertes: 8)
+2025-11-16 01:28:21,489 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 9 resistencias
+2025-11-16 01:28:22,155 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:22,263 - INFO - 📊 SOL/USDT: Detectados 19 niveles históricos (ATH/ATL: 2, Fuertes: 16)
+2025-11-16 01:28:22,264 - INFO - 📊 SOL/USDT - Niveles: 3 soportes, 16 resistencias
+2025-11-16 01:28:22,933 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:23,019 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 01:28:23,019 - INFO - 📊 HYPE/USDT - Niveles: 5 soportes, 6 resistencias
+2025-11-16 01:28:23,677 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 01:28:23,789 - INFO - 📊 SUI/USDT: Detectados 22 niveles históricos (ATH/ATL: 2, Fuertes: 19)
+2025-11-16 01:28:23,789 - INFO - 📊 SUI/USDT - Niveles: 2 soportes, 20 resistencias
+2025-11-16 01:28:24,113 - WARNING - Error obteniendo ticker de ETH/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:24,115 - ERROR - Error escaneando ETH/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:24,440 - WARNING - Error obteniendo ticker de SOL/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:24,443 - ERROR - Error escaneando SOL/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:24,767 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:24,769 - ERROR - Error escaneando HYPE/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:25,095 - WARNING - Error obteniendo ticker de SUI/USDT: object dict can't be used in 'await' expression
+2025-11-16 01:28:25,097 - ERROR - Error escaneando SUI/USDT: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+Traceback (most recent call last):
+  File "d:\Cosas Nahuel\BOT-SMC2.0\ETH - copia\main.py", line 449, in _scan_for_entries
+    setup = self.strategy.check_sweep_setup(df, 'LONG', current_price=current_price)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: SMCStrategy.check_sweep_setup() got an unexpected keyword argument 'current_price'
+2025-11-16 01:28:25,098 - INFO - ✅ Ciclo completado en 4.38s | Posiciones: 0/4 | Balance: $30.00
+2025-11-16 01:28:25,098 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 01:28:27,194 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
+2025-11-16 01:28:27,705 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Application._update_fetcher() running at C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_application.py:1149> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:764]>

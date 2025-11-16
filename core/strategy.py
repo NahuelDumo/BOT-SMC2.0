@@ -123,8 +123,8 @@ class SMCStrategy:
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
-            entry_price = float(current_candle['close'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
+            entry_price = current_price
             
             # SL un poco debajo del borde inferior del FVG
             fvg_low = float(fvg['fvg_bull_low'])
@@ -132,7 +132,7 @@ class SMCStrategy:
             stop_loss = fvg_low - sl_buffer
             
             logger.info(
-                f"🎯 FVG LONG detectado: Entry={entry_price:.2f}, "
+                f"🎯 FVG LONG detectado: Entry={entry_price:.2f} (precio actual), "
                 f"SL={stop_loss:.2f}, FVG=[{fvg_low:.2f}, {fvg['fvg_bull_high']:.2f}]"
             )
             
@@ -179,8 +179,8 @@ class SMCStrategy:
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
-            entry_price = float(current_candle['close'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
+            entry_price = current_price
             
             # SL un poco arriba del borde superior del FVG
             fvg_high = float(fvg['fvg_bear_high'])
@@ -188,7 +188,7 @@ class SMCStrategy:
             stop_loss = fvg_high + sl_buffer
             
             logger.info(
-                f"🎯 FVG SHORT detectado: Entry={entry_price:.2f}, "
+                f"🎯 FVG SHORT detectado: Entry={entry_price:.2f} (precio actual), "
                 f"SL={stop_loss:.2f}, FVG=[{fvg['fvg_bear_low']:.2f}, {fvg_high:.2f}]"
             )
             
@@ -205,22 +205,30 @@ class SMCStrategy:
     def check_sweep_setup(
         self, 
         df: pd.DataFrame, 
-        direction: str
+        direction: str,
+        current_price: Optional[float] = None
     ) -> Optional[Dict]:
         """
         Detecta setup de Barrido (Sweep) de liquidez + FVG.
         
-        IMPORTANTE: Entrada al 50% del FVG (como en backtest).
+        IMPORTANTE: Usa el precio actual en tiempo real.
         
         Args:
             df: DataFrame con swings y FVGs
             direction: 'LONG' o 'SHORT'
+            current_price: Precio actual del mercado (si None, usa close de vela)
             
         Returns:
             Dict con info del setup o None
         """
         if df.empty or len(df) < 50:
             return None
+        
+        current_candle = df.iloc[-1]
+        
+        # Precio actual: usar ticker en tiempo real o fallback a close
+        if current_price is None:
+            current_price = float(current_candle['close'])
         
         if direction == 'LONG':
             # Buscar barrido de swing lows
@@ -262,8 +270,8 @@ class SMCStrategy:
             if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
                 return None
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
-            entry_price = float(current_candle['close'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
+            entry_price = current_price
             
             # SL en el nivel de liquidez barrido
             stop_loss = float(recent_lows.iloc[-1])
@@ -316,8 +324,8 @@ class SMCStrategy:
             if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
                 return None
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
-            entry_price = float(current_candle['close'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
+            entry_price = current_price
             
             # SL en el nivel de liquidez barrido
             stop_loss = float(recent_highs.iloc[-1])
