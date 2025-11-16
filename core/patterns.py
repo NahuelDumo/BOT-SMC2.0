@@ -7,6 +7,7 @@ import logging
 import pandas as pd
 import numpy as np
 from scipy.signal import argrelextrema
+from typing import List, Dict
 
 logger = logging.getLogger(__name__)
 
@@ -19,12 +20,12 @@ class PatternDetector:
     
     def detect_fvg_and_mitigation(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Detecta Fair Value Gaps y calcula mitigación al 50%.
+        Detecta Fair Value Gaps y calcula mitigación cuando toca >50% del FVG.
         
-        IMPORTANTE: Usa la misma lógica que el backtest.
-        - FVG Alcista: Low[i+1] > High[i-1]
-        - FVG Bajista: High[i+1] < Low[i-1]
-        - Mitigación: Precio toca el 50% del FVG
+        IMPORTANTE: Un FVG se considera mitigado cuando una vela:
+        - Toca el 50% o más del gap (no solo el punto exacto)
+        - Para FVG alcista: low <= 50% del gap
+        - Para FVG bajista: high >= 50% del gap
         
         Args:
             df: DataFrame con datos OHLCV
@@ -91,31 +92,67 @@ class PatternDetector:
         df_copy['fvg_bear_high'] = fvg_bear_high_np
         df_copy['fvg_bear_mid'] = fvg_bear_mid_np
         
-        # Calcular mitigación (50% FVG)
+        # Calcular mitigación (>50% del FVG)
         is_mitigated_np = np.zeros(len(df_copy), dtype=bool)
         
         bull_fvg_indices = df_copy.index[df_copy['is_fvg_bullish']]
         bear_fvg_indices = df_copy.index[df_copy['is_fvg_bearish']]
         
-        # Mitigación de FVGs Alcistas
+        # Mitigación de FVGs Alcistas (>50% del gap)
         for fvg_idx_time in bull_fvg_indices:
             fvg_iloc = df_copy.index.get_loc(fvg_idx_time)
-            fvg_mid_price = df_copy['fvg_bull_mid'].iloc[fvg_iloc]
+            fvg_low = df_copy['fvg_bull_low'].iloc[fvg_iloc]
+            fvg_high = df_copy['fvg_bull_high'].iloc[fvg_iloc]
+            fvg_mid = df_copy['fvg_bull_mid'].iloc[fvg_iloc]
             
             if fvg_iloc + 1 < len(df_copy):
-                future_lows = df_copy['low'].values[fvg_iloc + 1:]
-                if (future_lows <= fvg_mid_price).any():
-                    is_mitigated_np[fvg_iloc] = True
+                # Verificar cada vela futura
+                for j in range(fvg_iloc + 1, len(df_copy)):
+                    candle_low = df_copy['low'].iloc[j]
+                    candle_high = df_copy['high'].iloc[j]
+                    
+                    # FVG mitigado si la vela toca >=50% del gap
+                    # Para FVG alcista: el low de la vela toca el 50% o más del gap
+                    if candle_low <= fvg_mid:
+                        # Calcular qué porcentaje del FVG fue tocado
+                        touched_percentage = ((fvg_high - candle_low) / (fvg_high - fvg_low)) * 100
+                        
+                        if touched_percentage >= 50.0:  # Más del 50% tocado
+                            is_mitigated_np[fvg_iloc] = True
+                            logger.debug(
+                                f"FVG alcista mitigado en índice {fvg_idx_time}: "
+                                f"tocado {touched_percentage:.1f}% del gap "
+                                f"(low: {candle_low:.4f} <= mid: {fvg_mid:.4f})"
+                            )
+                            break
         
-        # Mitigación de FVGs Bajistas
+        # Mitigación de FVGs Bajistas (>50% del gap)
         for fvg_idx_time in bear_fvg_indices:
             fvg_iloc = df_copy.index.get_loc(fvg_idx_time)
-            fvg_mid_price = df_copy['fvg_bear_mid'].iloc[fvg_iloc]
+            fvg_low = df_copy['fvg_bear_low'].iloc[fvg_iloc]
+            fvg_high = df_copy['fvg_bear_high'].iloc[fvg_iloc]
+            fvg_mid = df_copy['fvg_bear_mid'].iloc[fvg_iloc]
             
             if fvg_iloc + 1 < len(df_copy):
-                future_highs = df_copy['high'].values[fvg_iloc + 1:]
-                if (future_highs >= fvg_mid_price).any():
-                    is_mitigated_np[fvg_iloc] = True
+                # Verificar cada vela futura
+                for j in range(fvg_iloc + 1, len(df_copy)):
+                    candle_low = df_copy['low'].iloc[j]
+                    candle_high = df_copy['high'].iloc[j]
+                    
+                    # FVG mitigado si la vela toca >=50% del gap
+                    # Para FVG bajista: el high de la vela toca el 50% o más del gap
+                    if candle_high >= fvg_mid:
+                        # Calcular qué porcentaje del FVG fue tocado
+                        touched_percentage = ((candle_high - fvg_low) / (fvg_high - fvg_low)) * 100
+                        
+                        if touched_percentage >= 50.0:  # Más del 50% tocado
+                            is_mitigated_np[fvg_iloc] = True
+                            logger.debug(
+                                f"FVG bajista mitigado en índice {fvg_idx_time}: "
+                                f"tocado {touched_percentage:.1f}% del gap "
+                                f"(high: {candle_high:.4f} >= mid: {fvg_mid:.4f})"
+                            )
+                            break
         
         df_copy['is_mitigated'] = is_mitigated_np
         
@@ -156,6 +193,96 @@ class PatternDetector:
         ]['low']
         
         return df_copy
+    
+    def check_fvg_proximity(
+        self,
+        df: pd.DataFrame,
+        direction: str,
+        max_proximity_pct: float = 30.0
+    ) -> List[Dict]:
+        """
+        Verifica si el precio actual está cerca de un FVG no mitigado.
+        
+        Args:
+            df: DataFrame con FVGs detectados
+            direction: 'LONG' o 'SHORT'
+            max_proximity_pct: Máxima distancia porcentual para considerar "cerca"
+            
+        Returns:
+            Lista de FVGs cercanos no mitigados
+        """
+        if df.empty or len(df) < 3:
+            return []
+        
+        current_price = float(df['close'].iloc[-1])
+        nearby_fvgs = []
+        
+        if direction == 'LONG':
+            # Buscar FVGs alcistas no mitigados
+            bull_fvgs = df[df['is_fvg_bullish'] & ~df['is_mitigated']]
+            
+            for idx, row in bull_fvgs.iterrows():
+                fvg_low = row['fvg_bull_low']
+                fvg_high = row['fvg_bull_high']
+                fvg_mid = row['fvg_bull_mid']
+                
+                # Verificar si estamos cerca del FVG
+                if current_price <= fvg_high and current_price >= fvg_low:
+                    # Estamos dentro del FVG
+                    proximity_pct = 0.0
+                elif current_price > fvg_high:
+                    # Estamos por encima, calcular distancia
+                    proximity_pct = ((current_price - fvg_high) / fvg_high) * 100
+                else:
+                    # Estamos por debajo, calcular distancia
+                    proximity_pct = ((fvg_low - current_price) / fvg_low) * 100
+                
+                if proximity_pct <= max_proximity_pct:
+                    nearby_fvgs.append({
+                        'index': idx,
+                        'type': 'bullish',
+                        'low': fvg_low,
+                        'high': fvg_high,
+                        'mid': fvg_mid,
+                        'proximity_pct': proximity_pct,
+                        'current_price': current_price
+                    })
+        
+        else:  # SHORT
+            # Buscar FVGs bajistas no mitigados
+            bear_fvgs = df[df['is_fvg_bearish'] & ~df['is_mitigated']]
+            
+            for idx, row in bear_fvgs.iterrows():
+                fvg_low = row['fvg_bear_low']
+                fvg_high = row['fvg_bear_high']
+                fvg_mid = row['fvg_bear_mid']
+                
+                # Verificar si estamos cerca del FVG
+                if current_price <= fvg_high and current_price >= fvg_low:
+                    # Estamos dentro del FVG
+                    proximity_pct = 0.0
+                elif current_price < fvg_low:
+                    # Estamos por debajo, calcular distancia
+                    proximity_pct = ((fvg_low - current_price) / fvg_low) * 100
+                else:
+                    # Estamos por encima, calcular distancia
+                    proximity_pct = ((current_price - fvg_high) / fvg_high) * 100
+                
+                if proximity_pct <= max_proximity_pct:
+                    nearby_fvgs.append({
+                        'index': idx,
+                        'type': 'bearish',
+                        'low': fvg_low,
+                        'high': fvg_high,
+                        'mid': fvg_mid,
+                        'proximity_pct': proximity_pct,
+                        'current_price': current_price
+                    })
+        
+        # Ordenar por proximidad (más cerca primero)
+        nearby_fvgs.sort(key=lambda x: x['proximity_pct'])
+        
+        return nearby_fvgs
     
     def get_structural_stop_loss(
         self, 

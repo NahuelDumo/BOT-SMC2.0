@@ -61,7 +61,9 @@ class SmartMoneyLiveBot:
         self.risk_manager = RiskManager(
             risk_per_trade_pct=1.0,
             min_risk_as_pct=0.1,
-            risk_reward_ratio=2.0
+            risk_reward_ratio=3.0,
+            min_tp_pct=15.0,  # Mínimo 15% de ganancia en TP
+            pool_distance_multiplier=1.5  # Aumentar TP si pool está lejos
         )
         self.execution = ExecutionManager(
             private_client=self.private_client,
@@ -83,6 +85,10 @@ class SmartMoneyLiveBot:
         
         # NUEVO: Cache de niveles por símbolo
         self.levels_cache: Dict[str, Dict] = {}
+        
+        # NUEVO: Cache para evitar entradas duplicadas (cooldown por símbolo)
+        self.last_close_time: Dict[str, datetime] = {}
+        self.trade_cooldown_minutes = 10  # Esperar 10 minutos después de cerrar antes de otra entrada
     
     def _setup_public_client(self) -> ccxt.Exchange:
         """Configura cliente público para datos de mercado"""
@@ -296,6 +302,8 @@ class SmartMoneyLiveBot:
     
     async def _manage_open_positions(self):
         """Gestiona todas las posiciones abiertas"""
+        config = load_config()  # Recargar configuración para obtener symbol_configs
+        
         for symbol in list(self.execution.open_positions.keys()):
             try:
                 position = self.execution.open_positions[symbol]
@@ -329,6 +337,8 @@ class SmartMoneyLiveBot:
                         self.balance += trade_log['pnl']
                         self.total_pnl += trade_log['pnl']
                         self.candles_in_trade[symbol] = 0
+                        # REGISTRAR TIEMPO DE CIERRE para cooldown
+                        self.last_close_time[symbol] = datetime.now()
                         await self.telegram.send_trade_closed(trade_log)
                     
                     continue
@@ -344,18 +354,26 @@ class SmartMoneyLiveBot:
                     await self.execution.update_stop_loss(position, breakeven_sl)
                     await self.telegram.send_sl_updated(symbol, old_sl, breakeven_sl)
                 
-                # 3. Actualizar Trailing Stop
-                df_swings = df.iloc[position.entry_idx:] if hasattr(position, 'entry_idx') else df
-                trailing_sl = self.risk_manager.update_trailing_stop(
-                    position=position,
-                    current_price=current_price,
-                    df_swings=df_swings
-                )
+                # 3. Actualizar Trailing Stop SOLO si está habilitado para este símbolo
+                symbol_key = symbol.replace('/', '')  # ETH/USDT -> ETHUSDT
+                symbol_config = config.get('symbol_configs', {}).get(symbol_key, {})
+                enable_structural_stop = symbol_config.get('enable_structural_stop', True)
                 
-                if trailing_sl:
-                    old_sl = position.stop_loss
-                    await self.execution.update_stop_loss(position, trailing_sl)
-                    await self.telegram.send_sl_updated(symbol, old_sl, trailing_sl)
+                if enable_structural_stop:
+                    df_swings = df.iloc[position.entry_idx:] if hasattr(position, 'entry_idx') else df
+                    trailing_sl = self.risk_manager.update_trailing_stop(
+                        position=position,
+                        current_price=current_price,
+                        df_swings=df_swings
+                    )
+                    
+                    if trailing_sl:
+                        old_sl = position.stop_loss
+                        await self.execution.update_stop_loss(position, trailing_sl)
+                        await self.telegram.send_sl_updated(symbol, old_sl, trailing_sl)
+                        logger.debug(f" {symbol}: Trailing stop estructural activado")
+                else:
+                    logger.debug(f" {symbol}: Trailing stop estructural deshabilitado en config")
                 
             except Exception as e:
                 logger.error(f"Error gestionando posición {symbol}: {e}", exc_info=True)
@@ -369,8 +387,17 @@ class SmartMoneyLiveBot:
             if len(self.execution.open_positions) >= self.max_concurrent:
                 break
             
+            # EVITAR DUPLICADOS: No abrir si ya hay posición en este símbolo
             if symbol in self.execution.open_positions:
                 continue
+            
+            # EVITAR DUPLICADOS: Verificar cooldown desde último cierre
+            last_close = self.last_close_time.get(symbol)
+            if last_close:
+                time_since_close = datetime.now() - last_close
+                if time_since_close.total_seconds() < (self.trade_cooldown_minutes * 60):
+                    logger.debug(f" {symbol} en cooldown desde cierre ({time_since_close.total_seconds():.0f}s)")
+                    continue
             
             try:
                 df = self.market_data.get_dataframe(symbol, '15m')
@@ -387,7 +414,7 @@ class SmartMoneyLiveBot:
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue
+                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
                 
                 # PRIORIDAD 2: FVG Memory Short
                 setup = self.strategy.check_fvg_memory_setup(df, 'SHORT')
@@ -395,7 +422,7 @@ class SmartMoneyLiveBot:
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue
+                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
                 
                 # PRIORIDAD 3: Sweep Long
                 setup = self.strategy.check_sweep_setup(df, 'LONG')
@@ -403,7 +430,7 @@ class SmartMoneyLiveBot:
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue
+                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
                 
                 # PRIORIDAD 4: Sweep Short
                 setup = self.strategy.check_sweep_setup(df, 'SHORT')
@@ -411,17 +438,70 @@ class SmartMoneyLiveBot:
                 
                 if setup:
                     await self._execute_setup(symbol, setup)
-                    continue
+                    continue  # SALIR para evitar múltiples entradas del mismo símbolo
                 
             except Exception as e:
                 logger.error(f"Error escaneando {symbol}: {e}", exc_info=True)
     
     async def _execute_setup(self, symbol: str, setup: Dict):
-        """Ejecuta un setup validado"""
+        """Ejecuta un setup validado con TP dinámico (mínimo 15% ganancia sobre margen)"""
         leverage = self.leverage_per_symbol.get(
             symbol.replace('/', ''), 
             15
         )
+        
+        # Obtener DataFrame para análisis de pools
+        df = self.market_data.get_dataframe(symbol, '15m')
+        
+        # Calcular tamaño estándar de posición
+        size_result = self.risk_manager.calculate_position_size(
+            balance=self.balance,
+            leverage=leverage,
+            entry_price=setup['entry_price'],
+            stop_loss=setup['stop_loss'],
+            direction=setup['direction']
+        )
+        
+        if not size_result.get('valid', False):
+            logger.warning(f"Tamaño de posición inválido para {symbol}")
+            return
+        
+        # Calcular TP dinámico (mínimo 15% ganancia sobre margen + ajuste por pools)
+        tp_result = self.risk_manager.calculate_dynamic_take_profit(
+            entry_price=setup['entry_price'],
+            stop_loss=setup['stop_loss'],
+            direction=setup['direction'],
+            df=df,
+            position_size=size_result['size_base']  # Pasar tamaño real para cálculo de margen
+        )
+        
+        # Actualizar setup con valores calculados
+        setup['size_base'] = size_result['size_base']
+        setup['size_usd'] = size_result['size_usd']
+        setup['take_profit'] = tp_result['take_profit']
+        
+        # Logging de decisión dinámica
+        pool_info = tp_result.get('pool_info', {})
+        gain_pct = tp_result.get('gain_pct', 0)
+        
+        if pool_info.get('pool_distance_pct', 0) > 2.0:
+            logger.info(
+                f" {symbol}: Pool lejano ({pool_info['pool_distance_pct']:.2f}%). "
+                f"TP aumentado: ${tp_result['take_profit']:.4f} "
+                f"(ganancia: {gain_pct:.1f}% sobre margen, multiplicador: {tp_result['dynamic_multiplier']}x)"
+            )
+        else:
+            logger.info(
+                f" {symbol}: Pool cercano ({pool_info.get('pool_distance_pct', 0):.2f}%). "
+                f"TP estándar: ${tp_result['take_profit']:.4f} "
+                f"(ganancia: {gain_pct:.1f}% sobre margen)"
+            )
+        
+        # Verificar mínimo 15% de ganancia sobre margen
+        if gain_pct >= 15.0:
+            logger.info(f" {symbol}: TP cumple mínimo 15% ganancia sobre margen ({gain_pct:.1f}%)")
+        else:
+            logger.info(f" {symbol}: TP ajustado al mínimo 15% ganancia sobre margen")
         
         position = await self.execution.execute_trade(
             symbol=symbol,

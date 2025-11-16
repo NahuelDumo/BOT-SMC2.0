@@ -102,27 +102,14 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG (MÁS PERMISIVO)
+            # Verificar si la vela actual toca el 50% de algún FVG (SOLO TOQUE DIRECTO)
             touching_fvgs = unmitigated_fvgs[
                 (current_candle['low'] <= unmitigated_fvgs['fvg_bull_mid']) &
                 (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'])
             ]
             
-            # Si no toca exactamente, verificar si está cerca (dentro del 10% del FVG)
-            if touching_fvgs.empty:
-                touching_fvgs = unmitigated_fvgs[
-                    (
-                        (current_candle['low'] <= unmitigated_fvgs['fvg_bull_mid'] * 1.1) &
-                        (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'] * 0.9)
-                    ) |
-                    (
-                        abs(current_candle['close'] - unmitigated_fvgs['fvg_bull_mid']) <= 
-                        (unmitigated_fvgs['fvg_bull_high'] - unmitigated_fvgs['fvg_bull_low']) * 0.3
-                    )
-                ]
-                
-                if not touching_fvgs.empty:
-                    logger.info(" FVG LONG detectado por proximidad (no toque exacto)")
+            # ELIMINADO: Lógica de proximidad - SOLO se permite toque directo
+            # La entrada debe ser SI y SOLO SI el precio actual toca el FVG
             
             if touching_fvgs.empty:
                 return None
@@ -130,8 +117,8 @@ class SMCStrategy:
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL 50% DEL FVG (como en backtest)
-            entry_price = float(fvg['fvg_bull_mid'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
+            entry_price = float(current_candle['close'])
             
             # SL un poco debajo del borde inferior del FVG
             fvg_low = float(fvg['fvg_bull_low'])
@@ -156,27 +143,11 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el 50% de algún FVG (MÁS PERMISIVO)
+            # Verificar si la vela actual toca el 50% de algún FVG (SOLO TOQUE DIRECTO)
             touching_fvgs = unmitigated_fvgs[
                 (current_candle['high'] >= unmitigated_fvgs['fvg_bear_mid']) &
                 (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'])
             ]
-            
-            # Si no toca exactamente, verificar si está cerca (dentro del 10% del FVG)
-            if touching_fvgs.empty:
-                touching_fvgs = unmitigated_fvgs[
-                    (
-                        (current_candle['high'] >= unmitigated_fvgs['fvg_bear_mid'] * 0.9) &
-                        (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'] * 1.1)
-                    ) |
-                    (
-                        abs(current_candle['close'] - unmitigated_fvgs['fvg_bear_mid']) <= 
-                        (unmitigated_fvgs['fvg_bear_high'] - unmitigated_fvgs['fvg_bear_low']) * 0.3
-                    )
-                ]
-                
-                if not touching_fvgs.empty:
-                    logger.info(" FVG SHORT detectado por proximidad (no toque exacto)")
             
             if touching_fvgs.empty:
                 return None
@@ -185,7 +156,8 @@ class SMCStrategy:
             fvg = touching_fvgs.iloc[-1]
             
             # ENTRADA AL 50% DEL FVG (como en backtest)
-            entry_price = float(fvg['fvg_bear_mid'])
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
+            entry_price = float(current_candle['close'])
             
             # SL un poco arriba del borde superior del FVG
             fvg_high = float(fvg['fvg_bear_high'])
@@ -262,7 +234,8 @@ class SMCStrategy:
             if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
                 return None
             
-            entry_price = float(fvg_mid_price)
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
+            entry_price = float(current_candle['close'])
             
             # SL en el nivel de liquidez barrido
             stop_loss = float(recent_lows.iloc[-1])
@@ -315,7 +288,8 @@ class SMCStrategy:
             if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
                 return None
             
-            entry_price = float(fvg_mid_price)
+            # ENTRADA AL PRECIO ACTUAL DE MERCADO (no al precio del FVG)
+            entry_price = float(current_candle['close'])
             
             # SL en el nivel de liquidez barrido
             stop_loss = float(recent_highs.iloc[-1])

@@ -62,24 +62,26 @@ class ExecutionManager:
                 logger.warning(f"Tamaño de posición inválido: {sizing}")
                 return None
             
-            # Calcular take profit
-            if df_candles is not None:
-                # Usar pools de liquidez si tenemos datos de velas
-                atr = df_candles['atr'].iloc[-1] if 'atr' in df_candles.columns else None
-                take_profit = self.risk_manager.calculate_take_profit_with_pools(
-                    entry_price=setup['entry_price'],
-                    stop_loss=sizing['stop_loss'],
-                    direction=setup['direction'],
-                    df_candles=df_candles,
-                    atr=atr
-                )
-            else:
-                # Fallback a método tradicional
-                take_profit = self.risk_manager.calculate_take_profit(
-                    entry_price=setup['entry_price'],
-                    stop_loss=sizing['stop_loss'],
-                    direction=setup['direction']
-                )
+            # Usar take_profit del setup (ya calculado con mínimo 15%)
+            take_profit = setup.get('take_profit')
+            
+            # Si no hay TP en setup, calcularlo con método dinámico
+            if take_profit is None:
+                if df_candles is not None:
+                    tp_result = self.risk_manager.calculate_dynamic_take_profit(
+                        entry_price=setup['entry_price'],
+                        stop_loss=sizing['stop_loss'],
+                        direction=setup['direction'],
+                        df=df_candles
+                    )
+                else:
+                    tp_result = self.risk_manager.calculate_dynamic_take_profit(
+                        entry_price=setup['entry_price'],
+                        stop_loss=sizing['stop_loss'],
+                        direction=setup['direction'],
+                        df=None
+                    )
+                take_profit = tp_result['take_profit']
             
             # Ejecutar orden de mercado
             side = 'buy' if setup['direction'] == 'LONG' else 'sell'

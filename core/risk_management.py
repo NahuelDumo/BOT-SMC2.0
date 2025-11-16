@@ -40,13 +40,17 @@ class RiskManager:
         min_risk_as_pct: float = 0.1,
         risk_reward_ratio: float = 2.0,
         pool_lookback_bars: int = 192,
-        equal_tol: float = 0.0003
+        equal_tol: float = 0.0003,
+        min_tp_pct: float = 15.0,
+        pool_distance_multiplier: float = 1.5
     ):
         self.risk_per_trade_pct = risk_per_trade_pct
         self.min_risk_as_pct = min_risk_as_pct
         self.risk_reward_ratio = risk_reward_ratio
         self.pool_lookback_bars = pool_lookback_bars
         self.equal_tol = equal_tol
+        self.min_tp_pct = min_tp_pct
+        self.pool_distance_multiplier = pool_distance_multiplier
     
     def calculate_position_size(
         self,
@@ -143,7 +147,7 @@ class RiskManager:
         tp_override: Optional[float] = None
     ) -> float:
         """
-        Calcula el precio de take profit.
+        Calcula el precio de take profit (método original).
         
         Args:
             entry_price: Precio de entrada
@@ -170,6 +174,140 @@ class RiskManager:
             take_profit = entry_price - (risk * self.risk_reward_ratio)
         
         return take_profit
+    
+    def calculate_dynamic_take_profit(
+        self,
+        entry_price: float,
+        stop_loss: float,
+        direction: str,
+        df: Optional[pd.DataFrame] = None,
+        tp_override: Optional[float] = None,
+        position_size: float = 0.01
+    ) -> Dict[str, float]:
+        """
+        Calcula TP dinámico con MÍNIMO 15% de ganancia sobre margen y ajuste según pools.
+        
+        Args:
+            entry_price: Precio de entrada
+            stop_loss: Precio de stop loss
+            direction: 'LONG' o 'SHORT'
+            df: DataFrame para análisis de pools (opcional)
+            tp_override: TP manual (opcional)
+            position_size: Tamaño de posición en base asset para calcular margen
+            
+        Returns:
+            Dict con take_profit y métricas de decisión
+        """
+        # CALCULAR TP DIRECTAMENTE PARA 15% SOBRE MARGEN
+        # Margen usado = (entry_price * position_size) / leverage
+        # Asumir leverage promedio de 15x para el cálculo
+        leverage_used = 15
+        margin_used = (entry_price * position_size) / leverage_used
+        
+        # Ganancia requerida = 15% sobre margen
+        required_gain_usd = margin_used * 0.15
+        
+        if direction == 'LONG':
+            # TP = entrada + (ganancia_requerida / tamaño)
+            dynamic_tp = entry_price + (required_gain_usd / position_size)
+        else:  # SHORT
+            # TP = entrada - (ganancia_requerida / tamaño)
+            dynamic_tp = entry_price - (required_gain_usd / position_size)
+        
+        # Analizar pools si se proporciona DataFrame
+        pool_info = {}
+        dynamic_multiplier = 1.0
+        
+        if df is not None:
+            pools = self.find_liquidation_pools(df, entry_price, direction)
+            
+            if pools:
+                nearest_pool = pools[0]
+                pool_distance_pct = nearest_pool['distance_pct']
+                
+                pool_info = {
+                    'pool_distance_pct': pool_distance_pct,
+                    'pool_price': nearest_pool['price'],
+                    'pool_volume': nearest_pool['volume']
+                }
+                
+                # Si el pool está lejos (>2%), aumentar TP
+                if pool_distance_pct > 2.0:
+                    dynamic_multiplier = self.pool_distance_multiplier
+                    # Aumentar la ganancia requerida
+                    required_gain_usd *= dynamic_multiplier
+                    
+                    if direction == 'LONG':
+                        dynamic_tp = entry_price + (required_gain_usd / position_size)
+                    else:  # SHORT
+                        dynamic_tp = entry_price - (required_gain_usd / position_size)
+                    
+                    logger.info(
+                        f"Pool lejano detectado ({pool_distance_pct:.2f}%). "
+                        f"Aumentando TP con multiplicador {dynamic_multiplier}x"
+                    )
+                else:
+                    logger.info(
+                        f"Pool cercano detectado ({pool_distance_pct:.2f}%). "
+                        f"Usando TP estándar (15% sobre margen)"
+                    )
+        
+        # Calcular ganancia porcentual final
+        gain_pct = 15.0 * dynamic_multiplier
+        
+        return {
+            'take_profit': dynamic_tp,
+            'base_tp': dynamic_tp,
+            'dynamic_multiplier': dynamic_multiplier,
+            'gain_pct': gain_pct,
+            'pool_info': pool_info
+        }
+    
+    def find_liquidation_pools(
+        self,
+        df: pd.DataFrame,
+        entry_price: float,
+        direction: str
+    ) -> List[Dict]:
+        """Identifica pools de liquidación significativos"""
+        pools = []
+        
+        if len(df) < self.pool_lookback_bars:
+            return pools
+        
+        # Analizar volumen en zonas clave
+        lookback_df = df.tail(self.pool_lookback_bars)
+        volume_threshold = lookback_df['volume'].quantile(0.8)
+        high_volume_zones = lookback_df[lookback_df['volume'] >= volume_threshold]
+        
+        for idx, row in high_volume_zones.iterrows():
+            pool_price = row['close']
+            pool_volume = row['volume']
+            
+            # Calcular distancia desde entrada
+            if direction == 'LONG':
+                if pool_price > entry_price:
+                    distance_pct = ((pool_price - entry_price) / entry_price) * 100
+                    pools.append({
+                        'price': pool_price,
+                        'volume': pool_volume,
+                        'distance_pct': distance_pct,
+                        'type': 'short_liquidation'
+                    })
+            else:
+                if pool_price < entry_price:
+                    distance_pct = ((entry_price - pool_price) / entry_price) * 100
+                    pools.append({
+                        'price': pool_price,
+                        'volume': pool_volume,
+                        'distance_pct': distance_pct,
+                        'type': 'long_liquidation'
+                    })
+        
+        # Ordenar por volumen (mayor primero)
+        pools.sort(key=lambda x: x['volume'], reverse=True)
+        
+        return pools[:5]  # Top 5 pools más grandes
     
     def update_trailing_stop(
         self,
