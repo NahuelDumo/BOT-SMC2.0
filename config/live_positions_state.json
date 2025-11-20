@@ -1,0 +1,29 @@
+{
+    "smc_positions": {
+        "HYPE/USDT": {
+            "direction": "SHORT",
+            "size_base": 4.291599908445803,
+            "size_usd": 162.03793774318817,
+            "entry_price": 37.757,
+            "entry_time": "2025-11-16T14:15:19.680670",
+            "entry_idx": 0,
+            "stop_loss": 37.826904,
+            "original_stop_loss": 37.826904,
+            "take_profit": 37.190644999999996,
+            "liquidation_price": 0.0,
+            "margin_used": 10.80252918287921,
+            "is_copy": false,
+            "setup_type": "FVG_MEMORY"
+        },
+        "ETHUSDT": null,
+        "SOLUSDT": null,
+        "HYPEUSDT": null,
+        "SUIUSDT": null
+    },
+    "copy_positions": {
+        "ETHUSDT": null,
+        "SOLUSDT": null,
+        "HYPEUSDT": null,
+        "SUIUSDT": null
+    }
+}

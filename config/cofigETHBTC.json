@@ -8,7 +8,7 @@
     }
   ],
   "telegram_token": "7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY",
-  "telegram_chat_id": "-1002984624337",
+  "telegram_chat_id": "6670799737", 
   "symbols": ["ETHUSDT", "SOLUSDT", "HYPEUSDT", "SUIUSDT"],
   "initial_balance": 30,
   "enable_macd_filter": true,

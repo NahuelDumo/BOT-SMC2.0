@@ -68,6 +68,7 @@ class SmartMoneyLiveBot:
         self.execution = ExecutionManager(
             private_client=self.private_client,
             risk_manager=self.risk_manager,
+            strategy=self.strategy,
             max_candles_in_trade=48
         )
         
@@ -324,8 +325,15 @@ class SmartMoneyLiveBot:
                     # Fallback: usar close de la vela actual
                     current_price = float(current_candle['close'])
                 
-                # Incrementar contador de velas
-                self.candles_in_trade[symbol] = self.candles_in_trade.get(symbol, 0) + 1
+                # Guardar el timestamp de la última vela
+                if not hasattr(self, 'last_candle_time'):
+                    self.last_candle_time = {}
+
+                # Solo incrementar si es una nueva vela
+                current_candle_time = df.index[-1]
+                if self.last_candle_time.get(symbol) != current_candle_time:
+                    self.candles_in_trade[symbol] = self.candles_in_trade.get(symbol, 0) + 1
+                    self.last_candle_time[symbol] = current_candle_time
                 
                 # 1. Verificar condiciones de salida (SL, TP, Time Limit)
                 # NOTA: check_exit_conditions debe usar current_price para verificar SL/TP
@@ -540,7 +548,7 @@ class SmartMoneyLiveBot:
 def load_config() -> Dict:
     """Carga la configuración desde JSON"""
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    config_path = os.path.join(script_dir, 'cofigETHBTC.json')
+    config_path = os.path.join(script_dir, "config", 'cofigETHBTC.json')
     
     try:
         with open(config_path, 'r') as f:

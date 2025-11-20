@@ -2765,3 +2765,349 @@ task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Applic
 2025-11-16 01:34:41,915 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
 2025-11-16 01:34:42,960 - ERROR - Task was destroyed but it is pending!
 task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Application._update_fetcher() running at C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_application.py:1149> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:764]>
+2025-11-16 14:14:30,516 - ERROR - Archivo de configuración no encontrado: D:/config/cofigETHBTC.json
+2025-11-16 14:14:30,517 - ERROR - No se pudo cargar la configuración. Abortando.
+2025-11-16 14:15:06,391 - WARNING - Sin credenciales de API. Modo simulación.
+2025-11-16 14:15:06,954 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
+2025-11-16 14:15:07,504 - INFO - ✅ Comandos de Telegram configurados
+2025-11-16 14:15:07,504 - INFO - 📊 Inicializando datos de mercado...
+2025-11-16 14:15:13,183 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:13,350 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 14:15:13,350 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 14 resistencias
+2025-11-16 14:15:14,008 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:14,122 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:15:14,122 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:15:14,794 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:14,882 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:15:14,882 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:15:15,543 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:15,663 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 2, Fuertes: 22)
+2025-11-16 14:15:15,664 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:15:15,664 - INFO - ✅ Datos inicializados correctamente
+2025-11-16 14:15:15,664 - INFO - 📱 Inicializando bot de Telegram...
+2025-11-16 14:15:15,665 - INFO - ⚙️ Iniciando loop principal (actualización cada 10s)...
+2025-11-16 14:15:16,321 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:16,421 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 14:15:16,422 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 14 resistencias
+2025-11-16 14:15:17,080 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:17,192 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:15:17,192 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:15:17,849 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:17,933 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:15:17,933 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:15:18,590 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:18,708 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 2, Fuertes: 22)
+2025-11-16 14:15:18,709 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:15:19,675 - INFO - 🎯 FVG SHORT detectado: Entry=37.76 (precio actual), SL=37.83, FVG=[37.78, 37.81]
+2025-11-16 14:15:19,675 - INFO - ✅ Setup SHORT permitido (MACD 1H: -0.0990)
+2025-11-16 14:15:19,680 - INFO - Pool lejano detectado (2.41%). Aumentando TP con multiplicador 1.5x
+2025-11-16 14:15:19,680 - INFO -  HYPE/USDT: Pool lejano (2.41%). TP aumentado: $37.1906 (ganancia: 22.5% sobre margen, multiplicador: 1.5x)
+2025-11-16 14:15:19,680 - INFO -  HYPE/USDT: TP cumple mínimo 15% ganancia sobre margen (22.5%)
+2025-11-16 14:15:19,680 - WARNING -  MODO SIMULACIÓN: Sin cliente privado. Creando orden simulada.
+2025-11-16 14:15:19,680 - INFO - ✅ ORDEN EJECUTADA: SHORT 4.2916 HYPE/USDT @ $37.7570
+2025-11-16 14:15:19,680 - INFO - 🔄 MODO SIMULACIÓN: SL/TP manejados internamente
+2025-11-16 14:15:20,502 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getMe "HTTP/1.1 200 OK"
+2025-11-16 14:15:20,502 - INFO - 📱 Iniciando bot de Telegram...
+2025-11-16 14:15:20,503 - INFO - Application started
+2025-11-16 14:15:20,503 - INFO - 📱 Iniciando polling de Telegram...
+2025-11-16 14:15:20,645 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:15:20,972 - INFO - ✅ Ciclo completado en 5.31s | Posiciones: 1/4 | Balance: $30.00
+2025-11-16 14:15:20,973 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/deleteWebhook "HTTP/1.1 200 OK"
+2025-11-16 14:15:20,973 - INFO - ✅ Bot de Telegram escuchando comandos
+2025-11-16 14:15:20,974 - INFO - 📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels
+2025-11-16 14:15:23,160 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:15:31,640 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:31,755 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 14:15:31,755 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 14 resistencias
+2025-11-16 14:15:32,421 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:32,543 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:15:32,543 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:15:33,200 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:33,293 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:15:33,293 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:15:33,952 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:34,074 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 2, Fuertes: 22)
+2025-11-16 14:15:34,074 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:15:34,396 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 14:15:35,371 - INFO - ✅ Ciclo completado en 4.39s | Posiciones: 1/4 | Balance: $30.00
+2025-11-16 14:15:35,372 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:15:46,040 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:46,147 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 14:15:46,147 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 14 resistencias
+2025-11-16 14:15:46,808 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:46,935 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:15:46,936 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:15:47,592 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:47,676 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:15:47,676 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:15:48,335 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:15:48,458 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 23)
+2025-11-16 14:15:48,459 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:15:48,780 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 14:15:49,751 - INFO - ✅ Ciclo completado en 4.37s | Posiciones: 1/4 | Balance: $30.00
+2025-11-16 14:15:49,752 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:00,423 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:00,523 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 1, Fuertes: 11)
+2025-11-16 14:16:00,523 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 14 resistencias
+2025-11-16 14:16:01,187 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:01,303 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:16:01,303 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:16:01,959 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:02,043 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:16:02,044 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:16:02,708 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:02,832 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 23)
+2025-11-16 14:16:02,832 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:16:03,154 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 14:16:03,154 - INFO - 🔄 MODO SIMULACIÓN: Cierre simulado de posición
+2025-11-16 14:16:03,174 - INFO - 🔒 POSICIÓN CERRADA: HYPE/USDT | Stop Loss | PnL: $-0.30 (-2.78%)
+2025-11-16 14:16:03,175 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:04,036 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:16:04,999 - INFO - ✅ Ciclo completado en 5.23s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:16:13,403 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:15,662 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:15,761 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 10)
+2025-11-16 14:16:15,761 - INFO - 📊 ETH/USDT - Niveles: 2 soportes, 14 resistencias
+2025-11-16 14:16:16,418 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:16,548 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:16:16,548 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:16:17,208 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:17,289 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:16:17,289 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:16:17,956 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:18,076 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:16:18,076 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:16:19,045 - INFO - ✅ Ciclo completado en 4.04s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:16:23,626 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:28,829 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:28,831 - INFO - 📱 Comando /levels recibido de None
+2025-11-16 14:16:29,729 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:29,832 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 10)
+2025-11-16 14:16:29,832 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 15 resistencias
+2025-11-16 14:16:30,489 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:30,608 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:16:30,608 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:16:31,270 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:31,356 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:16:31,356 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:16:32,014 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:32,138 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:16:32,138 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:16:33,104 - INFO - ✅ Ciclo completado en 4.04s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:16:33,731 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:16:34,132 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:16:34,133 - INFO - ✅ Reporte de niveles enviado
+2025-11-16 14:16:39,060 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:43,771 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:43,878 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 10)
+2025-11-16 14:16:43,878 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 15 resistencias
+2025-11-16 14:16:44,604 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:44,735 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:16:44,735 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:16:45,396 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:45,507 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:16:45,507 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:16:46,164 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:46,286 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:16:46,286 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:16:47,257 - INFO - ✅ Ciclo completado en 4.15s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:16:49,285 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:16:57,926 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:58,025 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 10)
+2025-11-16 14:16:58,025 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 15 resistencias
+2025-11-16 14:16:58,682 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:58,804 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:16:58,804 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:16:59,471 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:16:59,557 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:16:59,557 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:17:00,221 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:00,346 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:17:00,346 - INFO - 📊 SUI/USDT - Niveles: 1 soportes, 26 resistencias
+2025-11-16 14:17:01,308 - INFO - ✅ Ciclo completado en 4.04s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:17:01,308 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:17:09,540 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:17:10,407 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 14:17:11,975 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:12,078 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 10)
+2025-11-16 14:17:12,079 - INFO - 📊 ETH/USDT - Niveles: 1 soportes, 15 resistencias
+2025-11-16 14:17:12,737 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:12,858 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:17:12,858 - INFO - 📊 SOL/USDT - Niveles: 1 soportes, 17 resistencias
+2025-11-16 14:17:13,518 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:13,627 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:17:13,627 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:17:14,284 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:14,414 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:17:14,414 - INFO - 📊 SUI/USDT - Niveles: 0 soportes, 27 resistencias
+2025-11-16 14:17:15,377 - INFO - ✅ Ciclo completado en 4.06s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:17:19,764 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:17:26,042 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:26,146 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 1, Fuertes: 10)
+2025-11-16 14:17:26,146 - INFO - 📊 ETH/USDT - Niveles: 0 soportes, 15 resistencias
+2025-11-16 14:17:26,804 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:26,915 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:17:26,916 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:17:27,574 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:27,658 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:17:27,658 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:17:28,314 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:28,437 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:17:28,438 - INFO - 📊 SUI/USDT - Niveles: 0 soportes, 27 resistencias
+2025-11-16 14:17:29,404 - INFO - ✅ Ciclo completado en 4.02s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:17:29,993 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:17:40,091 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:40,189 - INFO - 📊 ETH/USDT: Detectados 15 niveles históricos (ATH/ATL: 1, Fuertes: 10)
+2025-11-16 14:17:40,189 - INFO - 📊 ETH/USDT - Niveles: 0 soportes, 15 resistencias
+2025-11-16 14:17:40,849 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:40,964 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 14:17:40,964 - INFO - 📊 SOL/USDT - Niveles: 0 soportes, 18 resistencias
+2025-11-16 14:17:41,623 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:41,705 - INFO - 📊 HYPE/USDT: Detectados 9 niveles históricos (ATH/ATL: 1, Fuertes: 7)
+2025-11-16 14:17:41,705 - INFO - 📊 HYPE/USDT - Niveles: 4 soportes, 5 resistencias
+2025-11-16 14:17:42,368 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 14:17:42,493 - INFO - 📊 SUI/USDT: Detectados 27 niveles históricos (ATH/ATL: 1, Fuertes: 22)
+2025-11-16 14:17:42,493 - INFO - 📊 SUI/USDT - Niveles: 0 soportes, 27 resistencias
+2025-11-16 14:17:43,458 - INFO - ✅ Ciclo completado en 4.03s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 14:17:43,459 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 14:17:51,339 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.
+2025-11-16 14:17:53,231 - ERROR - Task was destroyed but it is pending!
+task: <Task cancelling name='Application:7738692166:update_fetcher' coro=<Application._update_fetcher() running at C:\Users\nahue\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\telegram\ext\_application.py:1149> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[gather.<locals>._done_callback() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py:764]>
+2025-11-16 20:32:16,864 - WARNING - Sin credenciales de API. Modo simulación.
+2025-11-16 20:32:17,411 - INFO - 🚀 Iniciando SmartMoneyLiveBot...
+2025-11-16 20:32:17,933 - INFO - ✅ Comandos de Telegram configurados
+2025-11-16 20:32:17,933 - INFO - 📊 Inicializando datos de mercado...
+2025-11-16 20:32:22,005 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:22,135 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:32:22,136 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:32:22,777 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:22,892 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:32:22,892 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:32:23,531 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:23,612 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:32:23,612 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:32:24,251 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:24,374 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:32:24,374 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:32:24,375 - INFO - ✅ Datos inicializados correctamente
+2025-11-16 20:32:24,376 - INFO - 📱 Inicializando bot de Telegram...
+2025-11-16 20:32:24,376 - INFO - ⚙️ Iniciando loop principal (actualización cada 10s)...
+2025-11-16 20:32:25,018 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:25,115 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:32:25,115 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:32:25,756 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:25,871 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:32:25,872 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:32:26,509 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:26,591 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:32:26,591 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:32:27,233 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:27,357 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:32:27,357 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:32:27,667 - WARNING - Error obteniendo ticker de HYPE/USDT: object dict can't be used in 'await' expression
+2025-11-16 20:32:27,668 - INFO - 🔄 MODO SIMULACIÓN: Cierre simulado de posición
+2025-11-16 20:32:27,671 - INFO - 🔒 POSICIÓN CERRADA: HYPE/USDT | Stop Loss | PnL: $-0.30 (-2.78%)
+2025-11-16 20:32:28,426 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getMe "HTTP/1.1 200 OK"
+2025-11-16 20:32:28,427 - INFO - 📱 Iniciando bot de Telegram...
+2025-11-16 20:32:28,427 - INFO - Application started
+2025-11-16 20:32:28,427 - INFO - 📱 Iniciando polling de Telegram...
+2025-11-16 20:32:28,552 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:32:29,476 - INFO - ✅ Ciclo completado en 5.10s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:32:29,477 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/deleteWebhook "HTTP/1.1 200 OK"
+2025-11-16 20:32:29,478 - INFO - ✅ Bot de Telegram escuchando comandos
+2025-11-16 20:32:29,478 - INFO - 📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels
+2025-11-16 20:32:31,073 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:32:40,117 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:40,220 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:32:40,220 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:32:40,864 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:40,980 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:32:40,980 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:32:41,622 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:41,704 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:32:41,705 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:32:42,342 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:42,467 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:32:42,468 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:32:43,393 - INFO - ✅ Ciclo completado en 3.90s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:32:43,394 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:32:46,083 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:32:46,085 - INFO - 📱 Comando /levels recibido de None
+2025-11-16 20:32:46,975 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:32:47,366 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:32:47,366 - INFO - ✅ Reporte de niveles enviado
+2025-11-16 20:32:54,036 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:54,132 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:32:54,132 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:32:54,776 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:54,892 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:32:54,892 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:32:55,525 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:55,608 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:32:55,608 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:32:56,254 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:32:56,376 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:32:56,377 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:32:57,299 - INFO - ✅ Ciclo completado en 3.90s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:32:57,300 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:33:07,954 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:08,056 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:33:08,056 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:33:08,699 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:08,829 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:33:08,829 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:33:09,472 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:09,558 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:33:09,558 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:33:10,197 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:10,329 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:33:10,330 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:33:11,251 - INFO - ✅ Ciclo completado en 3.94s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:33:11,252 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:33:21,898 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:22,004 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:33:22,004 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:33:22,637 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:22,765 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:33:22,765 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:33:23,393 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:23,478 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:33:23,479 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:33:24,122 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:24,250 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:33:24,250 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:33:25,183 - INFO - ✅ Ciclo completado en 3.92s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:33:25,184 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:33:35,824 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:35,922 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:33:35,923 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:33:36,550 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:36,677 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:33:36,677 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:33:37,310 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:37,392 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:33:37,392 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:33:38,034 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:38,159 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:33:38,159 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:33:39,087 - INFO - ✅ Ciclo completado en 3.89s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:33:39,088 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:33:45,889 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/getUpdates "HTTP/1.1 200 OK"
+2025-11-16 20:33:45,890 - INFO - 📱 Comando /fvg recibido de None
+2025-11-16 20:33:46,721 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:33:47,592 - INFO - HTTP Request: POST https://api.telegram.org/bot7738692166:AAHPBKWUVM8gcYldRojnFCWnOKwidfXL2cY/sendMessage "HTTP/1.1 200 OK"
+2025-11-16 20:33:47,593 - INFO - ✅ Reporte FVG enviado
+2025-11-16 20:33:49,744 - INFO - 📊 Datos actualizados para ETH/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:49,856 - INFO - 📊 ETH/USDT: Detectados 16 niveles históricos (ATH/ATL: 2, Fuertes: 11)
+2025-11-16 20:33:49,857 - INFO - 📊 ETH/USDT - Niveles: 3 soportes, 13 resistencias
+2025-11-16 20:33:50,495 - INFO - 📊 Datos actualizados para SOL/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:50,614 - INFO - 📊 SOL/USDT: Detectados 18 niveles históricos (ATH/ATL: 1, Fuertes: 17)
+2025-11-16 20:33:50,614 - INFO - 📊 SOL/USDT - Niveles: 2 soportes, 16 resistencias
+2025-11-16 20:33:51,250 - INFO - 📊 Datos actualizados para HYPE/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:51,334 - INFO - 📊 HYPE/USDT: Detectados 11 niveles históricos (ATH/ATL: 1, Fuertes: 9)
+2025-11-16 20:33:51,334 - INFO - 📊 HYPE/USDT - Niveles: 6 soportes, 5 resistencias
+2025-11-16 20:33:51,968 - INFO - 📊 Datos actualizados para SUI/USDT (15m: 1000, 1h: 200)
+2025-11-16 20:33:52,098 - INFO - 📊 SUI/USDT: Detectados 29 niveles históricos (ATH/ATL: 1, Fuertes: 25)
+2025-11-16 20:33:52,098 - INFO - 📊 SUI/USDT - Niveles: 4 soportes, 25 resistencias
+2025-11-16 20:33:53,032 - INFO - ✅ Ciclo completado en 3.93s | Posiciones: 0/4 | Balance: $29.70
+2025-11-16 20:33:55,358 - WARNING - Fetching updates got a asyncio.CancelledError. Ignoring as this task may onlybe closed via `Application.stop`.

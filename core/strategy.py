@@ -5,6 +5,7 @@ Validación de setups y filtros MTF
 
 import logging
 import pandas as pd
+import numpy as np
 from typing import Optional, Dict
 
 logger = logging.getLogger(__name__)
@@ -15,6 +16,116 @@ class SMCStrategy:
     
     def __init__(self):
         self.macd_threshold = 1e-6  # Umbral para considerar MACD como alcista/bajista
+    
+    def calculate_tp_with_liquidity_pools(
+        self,
+        entry_price: float,
+        direction: str,
+        df: pd.DataFrame,
+        original_tp: Optional[float] = None
+    ) -> Optional[float]:
+        """
+        Busca un pool de liquidación relevante (con concentración significativa) 
+        que esté a más de 1% de distancia del entry. Si existe, lo usa como TP.
+        
+        Args:
+            entry_price: Precio de entrada (ej: 136.75)
+            direction: 'LONG' o 'SHORT'
+            df: DataFrame con datos OHLCV (últimas 50 velas para detectar pools)
+            original_tp: TP original calculado (para comparar)
+            
+        Returns:
+            Precio del pool si es válido (>1% de distancia), None si no hay pool relevante
+        """
+        if df.empty or len(df) < 50:
+            return None
+        
+        try:
+            # Usar últimas 50 velas para detectar pools de liquidación
+            lookback = min(50, len(df))
+            window = df.tail(lookback)
+            
+            # Encontrar velas con volumen significativo (potenciales pools)
+            volume_mean = window['volume'].mean()
+            volume_std = window['volume'].std()
+            
+            # Umbral: media + 1 std (zonas de alto volumen)
+            high_volume_threshold = volume_mean + volume_std
+            high_volume_candles = window[window['volume'] >= high_volume_threshold]
+            
+            if high_volume_candles.empty:
+                return None
+            
+            # Agrupar precios de cierre cercanos (detectar clusters de liquidez)
+            pools = {}
+            tolerance = entry_price * 0.001  # 0.1% tolerancia para agrupar precios
+            
+            for idx, row in high_volume_candles.iterrows():
+                level = float(row['close'])
+                volume = float(row['volume'])
+                
+                # Buscar pool existente cercano
+                found = False
+                for pool_level in pools.keys():
+                    if abs(pool_level - level) < tolerance:
+                        pools[pool_level] += volume
+                        found = True
+                        break
+                
+                if not found:
+                    pools[level] = volume
+            
+            if not pools:
+                return None
+            
+            # Filtrar pools con concentración RELEVANTE
+            # (volumen acumulado debe ser > 15% del máximo volumen visto)
+            max_volume = window['volume'].max()
+            volume_threshold = max_volume * 0.15
+            
+            significant_pools = {p: v for p, v in pools.items() if v >= volume_threshold}
+            
+            if not significant_pools:
+                return None
+            
+            # Buscar el pool más cercano que esté a > 1% de distancia del entry
+            best_pool = None
+            min_distance_pct = float('inf')
+            
+            if direction == 'LONG':
+                # Para LONG: buscar pools ARRIBA del entry (resistencia)
+                for pool_price, pool_volume in significant_pools.items():
+                    if pool_price > entry_price:  # Pool debe estar arriba
+                        distance_pct = ((pool_price - entry_price) / entry_price) * 100
+                        
+                        # Pool válido si está a > 1% de distancia y es el más cercano
+                        if distance_pct > 1.0 and distance_pct < min_distance_pct:
+                            best_pool = pool_price
+                            min_distance_pct = distance_pct
+            
+            elif direction == 'SHORT':
+                # Para SHORT: buscar pools DEBAJO del entry (soporte)
+                for pool_price, pool_volume in significant_pools.items():
+                    if pool_price < entry_price:  # Pool debe estar debajo
+                        distance_pct = ((entry_price - pool_price) / entry_price) * 100
+                        
+                        # Pool válido si está a > 1% de distancia y es el más cercano
+                        if distance_pct > 1.0 and distance_pct < min_distance_pct:
+                            best_pool = pool_price
+                            min_distance_pct = distance_pct
+            
+            if best_pool is not None:
+                logger.info(
+                    f"✅ {direction}: Pool de liquidación relevante detectado como TP: ${best_pool:.4f} "
+                    f"({min_distance_pct:.2f}% de distancia desde entry ${entry_price:.4f})"
+                    + (f" (TP original era ${original_tp:.4f})" if original_tp else "")
+                )
+                return best_pool
+        
+        except Exception as e:
+            logger.debug(f"Error calculando TP con pools de liquidación: {e}")
+        
+        return None
     
     def check_mtf_filter(self, df: pd.DataFrame, direction: str) -> bool:
         """
@@ -56,10 +167,10 @@ class SMCStrategy:
                 logger.info(f"✅ Setup LONG permitido (MACD 1H: {macd_1h:.4f})")
         
         elif direction == 'SHORT':
-            # MÁS PERMISIVO: Permitir shorts si MACD < 0 o si está cerca de 0
-            # pero hay fuerte evidencia bajista (FVG no mitigado)
-            if macd_1h > 0.0001:  # Solo rechazar si MACD es claramente positivo
-                logger.debug(f"Setup SHORT rechazado por filtro MTF (MACD 1H: {macd_1h:.4f})")
+            # MÁS ESTRICTO: Exigir MACD claramente negativo para SHORT
+            # Rechazar si MACD >= -0.0001 (demasiado cercano a cero o positivo)
+            if macd_1h >= -0.0001:
+                logger.debug(f"Setup SHORT rechazado por filtro MTF (MACD 1H: {macd_1h:.4f} es muy débil)")
                 return False
             else:
                 logger.info(f"✅ Setup SHORT permitido (MACD 1H: {macd_1h:.4f})")
@@ -108,10 +219,11 @@ class SMCStrategy:
             if unmitigated_fvgs.empty:
                 return None
             
-            # Verificar si la vela actual toca el rango del FVG
+            # CORREGIDO: Verificar si el PRECIO ACTUAL (en tiempo real) toca el rango del FVG
+            # NO usar la vela actual completa, SOLO el precio actual
             touching_fvgs = unmitigated_fvgs[
-                (current_candle['low'] <= unmitigated_fvgs['fvg_bull_high']) &
-                (current_candle['high'] >= unmitigated_fvgs['fvg_bull_low'])
+                (current_price >= unmitigated_fvgs['fvg_bull_low']) &
+                (current_price <= unmitigated_fvgs['fvg_bull_high'])
             ]
             
             # ELIMINADO: Lógica de proximidad - SOLO se permite toque directo
@@ -123,12 +235,23 @@ class SMCStrategy:
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
-            entry_price = current_price
+            # VALIDAR tamaño mínimo del FVG (>0.1% del precio)
+            fvg_size = float(fvg['fvg_bull_high']) - float(fvg['fvg_bull_low'])
+            fvg_size_pct = (fvg_size / entry_price) * 100
             
-            # SL un poco debajo del borde inferior del FVG
+            if fvg_size_pct < 0.1:
+                logger.debug(
+                    f"❌ FVG alcista RECHAZADO por tamaño muy pequeño: {fvg_size_pct:.4f}% "
+                    f"(mínimo: 0.1%)"
+                )
+                return None
+            
+            # ENTRADA AL BORDE DEL FVG (como en backtest)
+            entry_price = float(fvg['fvg_bull_high'])
+            
+            # SL con buffer debajo del borde inferior del FVG (0.05% como en backtest)
             fvg_low = float(fvg['fvg_bull_low'])
-            sl_buffer = fvg_low * 0.0005
+            sl_buffer = fvg_low * 0.0005  # 0.05% de distancia (backtest config)
             stop_loss = fvg_low - sl_buffer
             
             logger.info(
@@ -155,12 +278,11 @@ class SMCStrategy:
                 logger.debug("❌ No hay FVGs bajistas no mitigados")
                 return None
             
-            # FIX: Verificar si la vela actual toca el rango del FVG
-            # ANTES era: high >= mid AND low <= high (MUY RESTRICTIVO)
-            # AHORA es: high >= low AND low <= high (toca cualquier parte del FVG)
+            # CORREGIDO: Verificar si el PRECIO ACTUAL (en tiempo real) toca el rango del FVG
+            # NO usar la vela actual completa, SOLO el precio actual
             touching_fvgs = unmitigated_fvgs[
-                (current_candle['high'] >= unmitigated_fvgs['fvg_bear_low']) &
-                (current_candle['low'] <= unmitigated_fvgs['fvg_bear_high'])
+                (current_price >= unmitigated_fvgs['fvg_bear_low']) &
+                (current_price <= unmitigated_fvgs['fvg_bear_high'])
             ]
             
             if touching_fvgs.empty:
@@ -179,12 +301,23 @@ class SMCStrategy:
             # Tomar el FVG más reciente
             fvg = touching_fvgs.iloc[-1]
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
-            entry_price = current_price
+            # VALIDAR tamaño mínimo del FVG (>0.1% del precio)
+            fvg_size = float(fvg['fvg_bear_high']) - float(fvg['fvg_bear_low'])
+            fvg_size_pct = (fvg_size / entry_price) * 100
             
-            # SL un poco arriba del borde superior del FVG
+            if fvg_size_pct < 0.1:
+                logger.debug(
+                    f"❌ FVG bajista RECHAZADO por tamaño muy pequeño: {fvg_size_pct:.4f}% "
+                    f"(mínimo: 0.1%)"
+                )
+                return None
+            
+            # ENTRADA AL BORDE DEL FVG (como en backtest)
+            entry_price = float(fvg['fvg_bear_low'])
+            
+            # SL con buffer arriba del borde superior del FVG (0.05% como en backtest)
             fvg_high = float(fvg['fvg_bear_high'])
-            sl_buffer = fvg_high * 0.0005
+            sl_buffer = fvg_high * 0.0005  # 0.05% de distancia (backtest config)
             stop_loss = fvg_high + sl_buffer
             
             logger.info(
@@ -263,17 +396,13 @@ class SMCStrategy:
             fvg = bullish_fvgs.iloc[-1]
             
             # ENTRADA AL 50% DEL FVG (como en backtest)
-            fvg_mid_price = fvg['fvg_bull_mid']
+            entry_price = float(fvg['fvg_bull_mid'])
             
-            # Verificar que la vela actual toca el 50% del FVG
-            current_candle = df.iloc[-1]
-            if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
+            # Verificar que el PRECIO ACTUAL (en tiempo real) toca el 50% del FVG
+            if not (current_price >= fvg['fvg_bull_low'] and current_price <= fvg['fvg_bull_high']):
                 return None
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
-            entry_price = current_price
-            
-            # SL en el nivel de liquidez barrido
+            # SL en el nivel de liquidez barrido (swing low)
             stop_loss = float(recent_lows.iloc[-1])
             
             return {
@@ -317,17 +446,13 @@ class SMCStrategy:
             fvg = bearish_fvgs.iloc[-1]
             
             # ENTRADA AL 50% DEL FVG (como en backtest)
-            fvg_mid_price = fvg['fvg_bear_mid']
+            entry_price = float(fvg['fvg_bear_mid'])
             
-            # Verificar que la vela actual toca el 50% del FVG
-            current_candle = df.iloc[-1]
-            if not (current_candle['low'] <= fvg_mid_price <= current_candle['high']):
+            # Verificar que el PRECIO ACTUAL (en tiempo real) toca el 50% del FVG
+            if not (current_price >= fvg['fvg_bear_low'] and current_price <= fvg['fvg_bear_high']):
                 return None
             
-            # ENTRADA AL PRECIO ACTUAL DE MERCADO EN TIEMPO REAL
-            entry_price = current_price
-            
-            # SL en el nivel de liquidez barrido
+            # SL en el nivel de liquidez barrido (swing high)
             stop_loss = float(recent_highs.iloc[-1])
             
             return {
