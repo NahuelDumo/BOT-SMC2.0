@@ -206,3 +206,16 @@ class TelegramHandler:
             await self.send_message(message)
         except Exception as e:
             logger.error(f"Error enviando notificación de error: {e}")
+    
+    async def send_webhook_cleanup(self):
+        """Notifica que se detectó y limpió un webhook activo"""
+        try:
+            message = (
+                "🧹 <b>WEBHOOK DETECTADO Y ELIMINADO</b>\n\n"
+                "✅ Se detectó un webhook activo durante la ejecución.\n"
+                "🔄 Se eliminó correctamente.\n"
+                "📍 El bot continuará escaneando entradas normalmente."
+            )
+            await self.send_message(message)
+        except Exception as e:
+            logger.error(f"Error enviando notificación de limpieza de webhook: {e}")

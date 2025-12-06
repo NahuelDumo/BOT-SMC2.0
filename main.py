@@ -154,37 +154,127 @@ class SmartMoneyLiveBot:
         logger.info("✅ Comandos de Telegram configurados")
     
     async def _run_telegram_bot(self):
-        """Ejecuta el bot de Telegram"""
+        """Ejecuta el bot de Telegram con manejo robusto de webhooks"""
         if self.telegram_app is None:
             logger.warning("⚠️ Bot de Telegram no configurado (falta token)")
             return
         
-        try:
-            logger.info("📱 Inicializando bot de Telegram...")
-            await self.telegram_app.initialize()
-            
-            logger.info("📱 Iniciando bot de Telegram...")
-            await self.telegram_app.start()
-            
-            # ELIMINAR WEBHOOK SI EXISTE (Solución a error Conflict)
-            logger.info("🧹 Eliminando webhook existente...")
-            await self.telegram_app.bot.delete_webhook(drop_pending_updates=True)
-            
-            logger.info("📱 Iniciando polling de Telegram...")
-            await self.telegram_app.updater.start_polling(
-                drop_pending_updates=True,
-                allowed_updates=['message', 'callback_query']
-            )
-            
-            logger.info("✅ Bot de Telegram escuchando comandos")
-            logger.info("📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels")
-            
-            # Mantener el bot corriendo
-            while True:
-                await asyncio.sleep(1)
+        max_retries = 3
+        retry_count = 0
+        
+        while retry_count < max_retries:
+            try:
+                logger.info("📱 Inicializando bot de Telegram...")
+                await self.telegram_app.initialize()
                 
-        except Exception as e:
-            logger.error(f"❌ Error en bot de Telegram: {e}", exc_info=True)
+                logger.info("📱 Iniciando bot de Telegram...")
+                await self.telegram_app.start()
+                
+                # PASO CRÍTICO: LIMPIAR WEBHOOKS MÚLTIPLES VECES CON REINTENTOS
+                logger.info("🧹 Limpiando webhooks existentes...")
+                webhook_found = False
+                for attempt in range(3):
+                    try:
+                        logger.info(f"   Intento {attempt + 1}/3 de eliminar webhook...")
+                        
+                        # Verificar primero si hay webhook activo
+                        try:
+                            webhook_info = await self.telegram_app.bot.get_webhook_info()
+                            if webhook_info and webhook_info.url:
+                                logger.warning(f"   ⚠️ Webhook encontrado: {webhook_info.url}")
+                                webhook_found = True
+                        except Exception as e:
+                            logger.debug(f"   No se pudo verificar webhook: {e}")
+                        
+                        # Eliminar webhook
+                        await self.telegram_app.bot.delete_webhook(drop_pending_updates=True)
+                        logger.info("   ✅ Webhook eliminado exitosamente")
+                        await asyncio.sleep(0.5)  # Pequeña pausa entre intentos
+                    except Exception as webhook_error:
+                        logger.warning(f"   Intento {attempt + 1}: {webhook_error}")
+                        await asyncio.sleep(0.5)
+                
+                # Verificación final
+                try:
+                    webhook_info = await self.telegram_app.bot.get_webhook_info()
+                    if webhook_info and webhook_info.url:
+                        logger.error(f"❌ Webhook aún activo después de eliminación: {webhook_info.url}")
+                        logger.info("🧹 Intentando última eliminación...")
+                        await self.telegram_app.bot.delete_webhook(drop_pending_updates=True)
+                        await asyncio.sleep(2)
+                    else:
+                        logger.info("✅ No hay webhooks activos")
+                except Exception as e:
+                    logger.debug(f"No se pudo verificar estado final de webhook: {e}")
+                
+                logger.info("📱 Iniciando polling de Telegram...")
+                await self.telegram_app.updater.start_polling(
+                    drop_pending_updates=True,
+                    allowed_updates=['message', 'callback_query'],
+                    poll_interval=0.3
+                )
+                
+                logger.info("✅ Bot de Telegram escuchando comandos")
+                logger.info("📋 Comandos disponibles: /start, /help, /fvg, /status, /positions, /levels")
+                
+                # Mantener el bot corriendo con monitoreo de webhook
+                webhook_check_counter = 0
+                last_webhook_cleanup = None
+                
+                while True:
+                    await asyncio.sleep(1)
+                    
+                    # Cada 30 segundos, verificar que no haya webhook activo
+                    webhook_check_counter += 1
+                    if webhook_check_counter >= 30:
+                        webhook_check_counter = 0
+                        try:
+                            webhook_info = await self.telegram_app.bot.get_webhook_info()
+                            if webhook_info and webhook_info.url:
+                                logger.warning(f"⚠️ WEBHOOK ACTIVO DETECTADO: {webhook_info.url}")
+                                
+                                # Evitar spam de limpiezas - máximo una cada 5 minutos
+                                now = datetime.now()
+                                if last_webhook_cleanup is None or (now - last_webhook_cleanup).total_seconds() > 300:
+                                    logger.info("🧹 LIMPIANDO WEBHOOK DETECTADO...")
+                                    
+                                    # Eliminar webhook
+                                    for attempt in range(3):
+                                        try:
+                                            await self.telegram_app.bot.delete_webhook(drop_pending_updates=True)
+                                            logger.info(f"   ✅ Webhook eliminado (intento {attempt + 1})")
+                                            await asyncio.sleep(1)
+                                            break
+                                        except Exception as e:
+                                            logger.warning(f"   Intento {attempt + 1} falló: {e}")
+                                            await asyncio.sleep(0.5)
+                                    
+                                    # Notificar al usuario
+                                    await self.telegram.send_webhook_cleanup()
+                                    
+                                    # Actualizar timestamp
+                                    last_webhook_cleanup = now
+                                    
+                                    # Escanear por nuevas posiciones después de limpiar webhook
+                                    logger.info("📍 Escaneando entradas después de limpiar webhook...")
+                                    await self._scan_for_entries()
+                                else:
+                                    time_since_last_cleanup = (now - last_webhook_cleanup).total_seconds()
+                                    logger.debug(f"Limpieza de webhook en cooldown ({time_since_last_cleanup:.0f}s de 300s)")
+                        except Exception as e:
+                            logger.debug(f"Error verificando webhook periódicamente: {e}")
+                
+            except Exception as e:
+                retry_count += 1
+                logger.error(f"❌ Error en bot de Telegram (intento {retry_count}/{max_retries}): {e}", exc_info=True)
+                
+                if retry_count < max_retries:
+                    wait_time = 5 * retry_count  # 5s, 10s, 15s
+                    logger.info(f"⏳ Reintentando en {wait_time} segundos...")
+                    await asyncio.sleep(wait_time)
+                else:
+                    logger.error("❌ No se pudo inicializar Telegram después de múltiples intentos")
+                    break
     
     async def _send_startup_notification(self):
         """Envía notificación de inicio después de que todo esté listo"""
