@@ -166,6 +166,10 @@ class SmartMoneyLiveBot:
             logger.info("📱 Iniciando bot de Telegram...")
             await self.telegram_app.start()
             
+            # ELIMINAR WEBHOOK SI EXISTE (Solución a error Conflict)
+            logger.info("🧹 Eliminando webhook existente...")
+            await self.telegram_app.bot.delete_webhook(drop_pending_updates=True)
+            
             logger.info("📱 Iniciando polling de Telegram...")
             await self.telegram_app.updater.start_polling(
                 drop_pending_updates=True,
